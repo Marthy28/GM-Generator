@@ -170,9 +170,12 @@
         "Sorkvi",
         "Servin",
         "Karrak"
+      ],
+      "female": [
+        "Dwinn"
       ]
     },
-    "lastNames" : [
+    "lastNames": [
       "Akurkam",
       "Gritsword",
       "Fissurefisher",

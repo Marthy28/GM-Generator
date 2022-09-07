@@ -3,13 +3,13 @@ package com.example.dndcharactergenerator.data
 import kotlin.random.Random
 
 class Character(generatedName: String) {
-    private val name: String
-    private val race: String
-    private val age: Int
-    private val gender: Gender
-    private val heroClass: String? = null
-    private val characteristic: Characteristic
-    private val weapon: Weapon
+    val name: String
+    val race: String
+    val age: Int
+    val gender: Gender
+    val heroClass: String? = null
+    val characteristic: Characteristic
+    val weapon: Weapon
 
     init {
         //générer un nom, âge, etc
