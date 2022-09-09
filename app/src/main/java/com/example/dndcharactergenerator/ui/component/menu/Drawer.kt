@@ -3,11 +3,11 @@ package com.example.dndcharactergenerator.ui.component.menu
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.dndcharactergenerator.navigation.DrawerScreens
+import com.example.dndcharactergenerator.navigation.AppScreens
 
 private val screens = listOf(
-    DrawerScreens.Home,
-    DrawerScreens.NewCharacter
+    AppScreens.Home,
+    AppScreens.NewCharacter,
 )
 
 @Composable
