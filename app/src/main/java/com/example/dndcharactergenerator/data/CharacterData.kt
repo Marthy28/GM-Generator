@@ -2,6 +2,7 @@ package com.example.dndcharactergenerator.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
 @Parcelize
 data class CharacterData(
@@ -11,4 +12,4 @@ data class CharacterData(
     //val gender: Gender,
     //val characteristic: Characteristic? = null,
     //val weapon: Weapon? = null
-): Parcelable
+) : Parcelable
