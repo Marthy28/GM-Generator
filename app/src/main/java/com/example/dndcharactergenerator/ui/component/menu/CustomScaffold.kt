@@ -8,50 +8,57 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.navigation.AppScreens
+import com.example.dndcharactergenerator.navigation.NavigationHost
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
+import com.example.dndcharactergenerator.ui.component.CharacterCard
 import com.example.dndcharactergenerator.ui.homepage.HomePage
 import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
 import kotlinx.coroutines.launch
 
-//https://stackoverflow.com/questions/66837991/hide-top-and-bottom-navigator-on-a-specific-screen-inside-scaffold-jetpack-compo
+//https://stackoverflow.com/questions/65610003/pass-parcelable-argument-with-compose-navigation
 @Composable
 fun CustomScaffold(navController: NavHostController) {
-    MyApplicationTheme() {
+    MyApplicationTheme {
         val scaffoldState = rememberScaffoldState()
         val topBarState = rememberSaveable { (mutableStateOf(true)) }
         val scope = rememberCoroutineScope()
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+        //Control topBar state
+        when (navBackStackEntry?.destination?.route) {
+            AppScreens.Home.route -> topBarState.value = true
+            AppScreens.NewCharacter.route -> topBarState.value = true
+            else -> topBarState.value = false
+        }
+
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                AnimatedVisibility(
-                    visible = topBarState.value,
-                    enter = slideInVertically(initialOffsetY = { it }),
-                    exit = slideOutVertically(targetOffsetY = { it }),
-                ) {
-                    TopAppBar(title = { Text(text = "D&D generator") },
-                        navigationIcon = {
-                            IconButton(onClick = { //showMenu = !showMenu
-                                scope.launch {
-                                    scaffoldState.drawerState.open()
-                                }
-                            }) {
-                                Icon(Icons.Default.Menu, "Menu")
+                if (topBarState.value) TopAppBar(title = { Text(text = "D&D generator") },
+                    navigationIcon = {
+                        IconButton(onClick = { //showMenu = !showMenu
+                            scope.launch {
+                                scaffoldState.drawerState.open()
                             }
-                        })
-                }
-
+                        }) {
+                            Icon(Icons.Default.Menu, "Menu")
+                        }
+                    })
+                /*AnimatedVisibility(
+                    visible = topBarState.value,
+                    enter = slideInVertically(initialOffsetY = { -it }),
+                    exit = slideOutVertically(targetOffsetY = { -it }),
+                )*/
             },
             drawerElevation = Dimens.halfPadding,
             drawerContent = {
@@ -70,24 +77,7 @@ fun CustomScaffold(navController: NavHostController) {
             }
         ) {
             Column(modifier = Modifier.padding(it)) {
-                //à découper si on veut
-                //faire de lauched effect un callback
-                NavHost(navController, startDestination = AppScreens.Home.route) {
-                    composable(AppScreens.Home.route) {
-                        HomePage(navController)
-                        LaunchedEffect(Unit) {
-                            topBarState.value = true
-                        }
-                    }
-                    composable(AppScreens.NewCharacter.route) {
-                        NewCharacterPage()
-                        LaunchedEffect(Unit) {
-                            topBarState.value = true
-                        }
-                    }
-                    composable(AppScreens.CharacterDetail.route + "/{character}", arguments = listOf(
-                        navArgument("character" {type = NavType.})))
-                }
+                NavigationHost(navController = navController)
             }
         }
     }

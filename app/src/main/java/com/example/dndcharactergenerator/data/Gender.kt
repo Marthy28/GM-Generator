@@ -1,5 +1,9 @@
 package com.example.dndcharactergenerator.data
 
-enum class Gender {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+enum class Gender : Parcelable {
     MALE, FEMALE, UNDEFINED
 }

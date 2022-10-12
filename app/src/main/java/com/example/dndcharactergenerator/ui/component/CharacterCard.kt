@@ -6,14 +6,14 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.dndcharactergenerator.data.Character
+import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.theme.Dimens
 
 @Composable
-fun CharacterCard(car : Character) {
+fun CharacterCard(characterData : CharacterData) {
     Card(modifier = Modifier.padding(Dimens.standardPadding)) {
         Row() {
-            Text(text = "${car.name} ${car.race}")
+            Text(text = "${characterData.name} ${characterData.race}")
         }
     }
 }
