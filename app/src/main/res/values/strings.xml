@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DnD Character Generator</string>
+    <string name="create_new_character">Créer un nouveau personnage</string>
+    <string name="race_description">Race : </string>
+    <string name="race_dragonborn">Drakéïde</string>
+    <string name="race_elf">Elfe</string>
+    <string name="race_dwarf">Nain</string>
+    <string name="age_description">Age : </string>
 </resources>

@@ -1,40 +1,41 @@
 package com.example.dndcharactergenerator.ui.homepage
 
-import android.net.Uri
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.example.dndcharactergenerator.data.CharacterData
-import com.example.dndcharactergenerator.data.Gender
-import com.example.dndcharactergenerator.navigation.AppScreens
-import com.google.gson.Gson
+import com.example.dndcharactergenerator.R
+import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailActivity
 
 @Composable
 fun HomePage(navController: NavHostController) {
+    val context = LocalContext.current
+    //val intent = Intent(context as Activity, CharacterDetailActivity::class.java)
     Column() {
         Text("Main page")
         //Faire une fonction de Navigate parce qu'on va l'utiliser plusieurs fois
         OutlinedButton(onClick = {
-            val character =
-                CharacterData(name = "Michel", race = "Humain", age = 45 )//gender = Gender.MALE)
-            val json = Uri.encode(Gson().toJson(character))
-            navController.navigate("characterDetail/$json") {
+            navController.navigate("newCharacter") {
                 navController.graph.startDestinationRoute?.let { route ->
                     popUpTo(route) {
                         saveState = true
                     }
                 }
-                launchSingleTop = true
-                restoreState = true
             }
         })
         {
-            Text(text = "NEW")
+            Text(text = stringResource(id = R.string.create_new_character))
         }
     }
 }
+
+
+//  val character =
+//                CharacterData(name = "Michel", race = "Humain", age = 45)//gender = Gender.MALE)
+//            intent.putExtra("character", character)
+//            context.startActivity(intent)

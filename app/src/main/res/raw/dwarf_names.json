@@ -1,0 +1,25 @@
+{
+    "firstNames": {
+      "male": [
+        "Kiljald",
+        "Ragvaldur",
+        "Grenbek",
+        "Graniggs",
+        "Sorkvi",
+        "Servin",
+        "Karrak"
+      ],
+      "female": [
+        "Dwinn"
+      ]
+    },
+    "lastNames": [
+      "Akurkam",
+      "Gritsword",
+      "Fissurefisher",
+      "Orcshorn",
+      "McKnuckle",
+      "Goldenfield",
+      "Ironhelm"
+    ]
+}

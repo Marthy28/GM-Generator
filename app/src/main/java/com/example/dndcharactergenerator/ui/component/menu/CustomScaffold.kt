@@ -1,28 +1,22 @@
 package com.example.dndcharactergenerator.ui.component.menu
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.navigation.NavigationHost
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
-import com.example.dndcharactergenerator.ui.component.CharacterCard
-import com.example.dndcharactergenerator.ui.homepage.HomePage
-import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
 import kotlinx.coroutines.launch
 
 //https://stackoverflow.com/questions/65610003/pass-parcelable-argument-with-compose-navigation

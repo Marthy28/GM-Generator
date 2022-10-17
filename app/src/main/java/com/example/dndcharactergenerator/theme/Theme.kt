@@ -5,8 +5,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.unit.dp
 
 private val DarkColorPalette = darkColors(
     primary = Purple200,
@@ -15,8 +13,8 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = RedColor,
+    primaryVariant = VariantRedColor,
     secondary = Teal200
 
     /* Other default colors to override
@@ -42,7 +40,7 @@ fun MyApplicationTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = CustomTypography,
         shapes = Shapes,
         content = content
     )

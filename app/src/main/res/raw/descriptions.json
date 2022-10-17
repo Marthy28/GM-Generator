@@ -1,0 +1,34 @@
+{
+  "description": {
+    "physical": [
+      "A un étrange tatouage sur la nuque",
+      "A une cicatrice sur l'oeil",
+      "A une jambe de bois",
+      "De nombreuses cicatrices parcourent son corps",
+      "A un chat",
+      "A l'air intelligent"
+    ],
+    "Hair": {
+      "color": [
+        "blonds",
+        "bruns",
+        "roux",
+        "châtins",
+        "blancs",
+        "noirs"
+      ],
+      "type": [
+        "lisses",
+        "ondulés",
+        "bouclés",
+        "crépus"
+      ],
+      "length": [
+        "courts",
+        "mi-longs",
+        "longs"
+      ]
+    }
+  }
+}
+
