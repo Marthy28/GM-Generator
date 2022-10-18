@@ -15,7 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.data.Race
-import com.example.dndcharactergenerator.data.raceFile
 import com.example.dndcharactergenerator.theme.Dimens
 
 @Composable
@@ -37,7 +36,7 @@ fun CharacterDetail(character: CharacterData) {
             ) {
                 DescriptionAndValue(
                     description = stringResource(R.string.race_description),
-                    value = stringResource(raceFile[character.race]!!.second)
+                    value = stringResource(character.race.getName())
                 )
                 Spacer(modifier = Modifier.height(Dimens.standardPadding))
                 DescriptionAndValue(
