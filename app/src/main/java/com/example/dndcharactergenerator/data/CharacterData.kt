@@ -1,35 +1,50 @@
 package com.example.dndcharactergenerator.data
 
 import android.content.Context
-import android.content.res.AssetManager
 import android.os.Parcelable
-import com.example.dndcharactergenerator.R
 import com.google.gson.Gson
+import com.google.gson.annotations.Expose
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlin.reflect.full.createInstance
 
-private fun AssetManager.readAssetsFile(fileId: Int, context: Context): String =
+private fun readAssetsFile(fileId: Int, context: Context): String =
     context.resources.openRawResource(fileId).bufferedReader().use { it.readText() }
 
 @Parcelize
 data class CharacterData(
     val firstName: String,
     val lastName: String,
+    @Expose(serialize = false)
     val race: Race,
+    val raceName: String,
     val age: Int,
     //val gender: Gender,
-    //val characteristic: Characteristic? = null,
+    val characteristic: Characteristic? = null,
     //val weapon: Weapon? = null
 ) : Parcelable {
+    @IgnoredOnParcel
+    val pagedList: Race = race
+
     companion object {
-        fun createNewCharacter(context: Context): CharacterData {
-            val fullName = getName(context)
-            val race = Race.DRAGONBORN
+        fun createNewCharacter(context: Context, raceName: String? = null): CharacterData {
+            val race = raceName?.let { Race.fromString(it) } ?: getRandomRace()
+            val raceName = race.javaClass.simpleName
+            val fullName = getName(context, race)
             val age = 45
-            return CharacterData(fullName.first, fullName.second, race, age)
+            val characteristic = Characteristic.generateRandomCarac()
+            return CharacterData(
+                fullName.first,
+                fullName.second,
+                race,
+                raceName,
+                age,
+                characteristic
+            )
         }
 
-        fun getName(context: Context): Pair<String, String> {
-            val nameJson = context.assets.readAssetsFile(R.raw.dragonborn_names, context)
+        private fun getName(context: Context, race: Race): Pair<String, String> {
+            val nameJson = readAssetsFile(race.database, context)
             val names = Gson().fromJson(
                 nameJson,
                 CompleteName::class.java
@@ -37,7 +52,7 @@ data class CharacterData(
 
             return Pair(names.firstNames.male.random(), names.lastNames.random())
         }
+
+        private fun getRandomRace() = Race::class.sealedSubclasses.random().createInstance()
     }
-
-
 }

@@ -2,27 +2,50 @@ package com.example.dndcharactergenerator.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
 
 @Parcelize
 data class Characteristic(
     val strength: Int,
     val dexterity: Int,
-    val consitution: Int,
+    val constitution: Int,
     val intelligence: Int,
     val wisdom: Int,
     val charisma: Int,
-    val PV: Int) :Parcelable
-{
-    /*init {
-        strength = generateCarac()
-        dexterity = generateCarac()
-        consitution = generateCarac()
-        intelligence = generateCarac()
-        wisdom = generateCarac()
-        charisma = generateCarac()
-        PV = consitution
-    }*/
+    val pv: Int
+) : Parcelable {
+    companion object {
+        private val characteristicsValueList = listOf(
+            15,
+            14,
+            13,
+            12,
+            10,
+            8
+        )
 
-    fun generateCarac(): Int = Random.nextInt(0, 12)
+        fun generateRandomCarac(): Characteristic {
+            val values = characteristicsValueList.shuffled()
+            return Characteristic(
+                values[0],
+                values[1],
+                values[2],
+                values[3],
+                values[4],
+                values[5],
+                10
+            )
+        }
+
+        fun returnHp(): Int = 15
+
+        fun Characteristic.toList() = listOf(
+            this.strength,
+            this.dexterity,
+            this.constitution,
+            this.intelligence,
+            this.wisdom,
+            this.charisma,
+            this.pv
+        )
+    }
 }

@@ -7,15 +7,15 @@
         "Sylgolor",
         "Omaceran",
         "Uripeiros",
-        "Rocan Shesendran",
-        "Qiren Vuvesh",
-        "Leotoris Yestorran",
-        "Beipetor Xallondrann",
-        "Saelethil Isiliraiellyn",
-        "Montagor Taurntyrith",
-        "Raunaeril Tellynnan",
-        "Alabyran Moondown",
-        "Jhaartael Gwaelon",
+        "Rocan",
+        "Qiren",
+        "Leotoris",
+        "Beipetor",
+        "Saelethil",
+        "Montagor",
+        "Raunaeril",
+        "Alabyran",
+        "Jhaartael",
         "Faelyn",
         "Vaeril",
         "Faelyn",
@@ -45,7 +45,7 @@
         "Alys"
       ]
     },
-    "lastnames": [
+    "lastNames": [
       "Emberlight",
       "Lassagaseer",
       "Chamaranthe",
@@ -76,6 +76,7 @@
       "Beor",
       "Stormspear",
       "Bronzeflight",
-      "Irian"
+      "Irian",
+      "Vuvesh"
     ]
 }
