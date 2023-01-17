@@ -6,4 +6,5 @@
     <string name="race_elf">Elfe</string>
     <string name="race_dwarf">Nain</string>
     <string name="age_description">Age : </string>
+    <string name="Save">Sauvegarder</string>
 </resources>

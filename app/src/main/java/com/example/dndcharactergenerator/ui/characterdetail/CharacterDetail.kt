@@ -27,9 +27,7 @@ import com.example.dndcharactergenerator.theme.Dimens
 @Composable
 fun CharacterDetail(character: CharacterData) {
     Card(
-        modifier = Modifier
-            .padding(Dimens.standardPadding)
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
             Text(

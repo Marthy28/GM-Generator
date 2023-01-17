@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.annotations.Expose
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 import kotlin.reflect.full.createInstance
 
 private fun readAssetsFile(fileId: Int, context: Context): String =
@@ -31,7 +32,7 @@ data class CharacterData(
             val race = raceName?.let { Race.fromString(it) } ?: getRandomRace()
             val raceName = race.javaClass.simpleName
             val fullName = getName(context, race)
-            val age = 45
+            val age = getRandomAge()
             val characteristic = Characteristic.generateRandomCarac()
             return CharacterData(
                 fullName.first,
@@ -54,5 +55,7 @@ data class CharacterData(
         }
 
         private fun getRandomRace() = Race::class.sealedSubclasses.random().createInstance()
+
+        private fun getRandomAge() = Random.nextInt(17, 76)
     }
 }
