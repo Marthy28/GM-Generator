@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DnD Character Generator</string>
+    <string name="race_description">Race : </string>
+    <string name="race_dragonborn">Drakéïde</string>
+    <string name="race_elf">Elfe</string>
+    <string name="race_dwarf">Nain</string>
+    <string name="age_description">Age : </string>
+    <string name="Save">Sauvegarder</string>
+    <string name="new_character">Nouveau personnage</string>
+    <string name="create_new_character">Créer un nouveau personnage</string>
+    <string name="home_page_name">D&amp;D generateurr</string>
+    <string name="new_character_page">New character page</string>
+    <string name="character_list_empty">Votre liste de personnage est vide</string>
+</resources>

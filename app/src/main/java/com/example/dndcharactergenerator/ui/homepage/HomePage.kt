@@ -4,17 +4,22 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.data.CharacterDataDeserializer
+import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailActivity
 import com.example.dndcharactergenerator.ui.component.CharacterCardDetail
 import com.example.dndcharactergenerator.utils.SharedPreferencesUtils
@@ -45,8 +50,9 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
     ).create()
 
     if (charactersListJson.isEmpty()) {
-        Column() {
-            Text("Votre liste est vide, ajoutez un personnage maintenant")
+        Column(modifier = Modifier.padding(Dimens.standardPadding)) {
+            Text(stringResource(R.string.character_list_empty))
+            Spacer(modifier = Modifier.height(Dimens.standardPadding))
             OutlinedButton(onClick = {
                 navController.navigate("newCharacter") {
                     navController.graph.startDestinationRoute?.let { route ->
@@ -61,7 +67,7 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
             }
         }
     } else {
-        LazyColumn() {
+        LazyColumn(modifier = Modifier.padding(Dimens.standardPadding)) {
             items(items = charactersListJson) { item ->
                 val character = gsonBuilder.fromJson(item, CharacterData::class.java)
                 CharacterCardDetail(characterData = character, onClick = {
@@ -73,7 +79,3 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
         }
     }
 }
-//  val character =
-//                CharacterData(name = "Michel", race = "Humain", age = 45)//gender = Gender.MALE)
-//            intent.putExtra("character", character)
-//            context.startActivity(intent)

@@ -8,11 +8,14 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.navigation.NavigationHost
 import com.example.dndcharactergenerator.theme.Dimens
@@ -25,20 +28,28 @@ fun CustomScaffold(navController: NavHostController) {
     MyApplicationTheme {
         val scaffoldState = rememberScaffoldState()
         val topBarState = rememberSaveable { (mutableStateOf(true)) }
+        val nameState = remember { mutableStateOf("") }
         val scope = rememberCoroutineScope()
         val navBackStackEntry by navController.currentBackStackEntryAsState()
 
         //Control topBar state
         when (navBackStackEntry?.destination?.route) {
-            AppScreens.Home.route -> topBarState.value = true
-            AppScreens.NewCharacter.route -> topBarState.value = true
+            AppScreens.Home.route -> {
+                topBarState.value = true
+                nameState.value = stringResource(R.string.home_page_name)
+            }
+            AppScreens.NewCharacter.route -> {
+                topBarState.value = true
+                nameState.value = stringResource(R.string.new_character)
+
+            }
             else -> topBarState.value = false
         }
 
         Scaffold(
             scaffoldState = scaffoldState,
             topBar = {
-                if (topBarState.value) TopAppBar(title = { Text(text = "D&D generator") },
+                if (topBarState.value) TopAppBar(title = { Text(text = nameState.value) },
                     navigationIcon = {
                         IconButton(onClick = { //showMenu = !showMenu
                             scope.launch {
@@ -48,11 +59,6 @@ fun CustomScaffold(navController: NavHostController) {
                             Icon(Icons.Default.Menu, "Menu")
                         }
                     })
-                /*AnimatedVisibility(
-                    visible = topBarState.value,
-                    enter = slideInVertically(initialOffsetY = { -it }),
-                    exit = slideOutVertically(targetOffsetY = { -it }),
-                )*/
             },
             drawerElevation = Dimens.halfPadding,
             drawerContent = {
