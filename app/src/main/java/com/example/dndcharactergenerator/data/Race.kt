@@ -14,6 +14,9 @@ sealed class Race(val name: Int, val database: Int) : Parcelable {
         fun fromString(name: String) =
             Race::class.sealedSubclasses.firstOrNull { it.simpleName == name }?.createInstance()
                 ?: Dragonborn()
+        fun fromStringResource(id: Int) =
+            Race::class.sealedSubclasses.firstOrNull { it.createInstance().name == id }?.createInstance()
+                ?: Dragonborn()
     }
 }
 
@@ -41,11 +44,11 @@ data class Dwarf(
     val dwarfDatabase: Int = R.raw.dwarf_names
 ) : Race(dwarfName, dwarfDatabase)
 
-@Parcelize
+/*@Parcelize
 sealed class Race2(val name: String) : Parcelable {
     data class Elf(val nameElf: String) : Race2(nameElf)
 }
 
 fun Race2.getDataBase() = when (this) {
     is Race2.Elf -> R.raw.elf_names
-}
+}*/

@@ -28,11 +28,15 @@ data class CharacterData(
     val pagedList: Race = race
 
     companion object {
-        fun createNewCharacter(context: Context, raceName: String? = null): CharacterData {
-            val race = raceName?.let { Race.fromString(it) } ?: getRandomRace()
+        fun createNewCharacter(
+            context: Context,
+            raceName: Int? = null,
+            age: Int? = null
+        ): CharacterData {
+            val race = raceName?.let { Race.fromStringResource(it) } ?: getRandomRace()
             val raceName = race.javaClass.simpleName
             val fullName = getName(context, race)
-            val age = getRandomAge()
+            val age = age ?: getRandomAge()
             val characteristic = Characteristic.generateRandomCarac()
             return CharacterData(
                 fullName.first,

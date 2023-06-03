@@ -9,7 +9,7 @@
     <string name="Save">Sauvegarder</string>
     <string name="new_character">Nouveau personnage</string>
     <string name="create_new_character">Créer un nouveau personnage</string>
-    <string name="home_page_name">D&amp;D generateurr</string>
+    <string name="home_page_name">D&amp;D generateur</string>
     <string name="new_character_page">New character page</string>
     <string name="character_list_empty">Votre liste de personnage est vide</string>
 </resources>

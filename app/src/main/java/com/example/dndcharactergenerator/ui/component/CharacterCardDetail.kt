@@ -10,13 +10,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.utils.Mock
 
 @Composable
-fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit) {
+fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit, onDelete: () -> Unit) {
     Card(
+        elevation = 10.dp,
         modifier = Modifier
             .fillMaxWidth()
             .padding(Dimens.halfPadding)
@@ -27,8 +29,13 @@ fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit) {
             modifier = Modifier.padding(horizontal = Dimens.standardPadding)
         ) {
             Text("${characterData.firstName} ${characterData.lastName}")
-            IconButton(onClick = {  }) {
-                Icon(Icons.Default.Delete, "Delete", Modifier.size(ButtonDefaults.IconSize), tint = Color.Red)
+            IconButton(onClick = onDelete) {
+                Icon(
+                    Icons.Default.Delete,
+                    "Delete",
+                    Modifier.size(ButtonDefaults.IconSize),
+                    tint = Color.Red
+                )
             }
         }
     }
@@ -37,5 +44,5 @@ fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit) {
 @Preview
 @Composable
 fun ShowCharacterCardDetail() {
-    CharacterCardDetail(characterData = Mock.characterDataMock, {})
+    CharacterCardDetail(characterData = Mock.characterDataMock, {}, {})
 }

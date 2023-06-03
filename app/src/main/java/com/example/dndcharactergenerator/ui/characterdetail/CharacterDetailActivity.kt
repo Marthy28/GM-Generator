@@ -25,6 +25,7 @@ class CharacterDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val character = intent.getParcelableExtra<CharacterData>("character")
+        val editable = intent.getBooleanExtra("editable", false)
         setContent {
             MyApplicationTheme() {
                 Scaffold {
