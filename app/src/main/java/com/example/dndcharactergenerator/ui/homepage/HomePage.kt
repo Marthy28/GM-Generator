@@ -45,7 +45,7 @@ fun HomePage(navController: NavHostController) {
 fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
 
     val openDialog = remember { mutableStateOf(false) }
-    var selectedCharacter = remember {
+    val selectedCharacter = remember {
         mutableStateOf<CharacterData?>(null)
     }
     val sharedPreferences =

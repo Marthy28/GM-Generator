@@ -20,8 +20,9 @@ data class CharacterData(
     val race: Race,
     val raceName: String,
     val age: Int,
-    //val gender: Gender,
     val characteristic: Characteristic? = null,
+    val physicalDescription: String? = "",
+    val background : String? = ""
     //val weapon: Weapon? = null
 ) : Parcelable {
     @IgnoredOnParcel
