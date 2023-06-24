@@ -3,10 +3,10 @@ package com.example.dndcharactergenerator.ui.characterdetail
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +32,7 @@ fun CharacterDetail(character: CharacterData) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
             Text(
                 text = "${character.firstName} ${character.lastName}",
-                style = MaterialTheme.typography.h2
+                style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(Dimens.standardPadding))
             Row(

@@ -2,15 +2,14 @@ package com.example.dndcharactergenerator.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.utils.Mock
@@ -18,7 +17,7 @@ import com.example.dndcharactergenerator.utils.Mock
 @Composable
 fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit, onDelete: () -> Unit) {
     Card(
-        elevation = 10.dp,
+        elevation = CardDefaults.cardElevation(),
         modifier = Modifier
             .fillMaxWidth()
             .padding(Dimens.halfPadding)

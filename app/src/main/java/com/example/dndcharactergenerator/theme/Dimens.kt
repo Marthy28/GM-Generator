@@ -12,5 +12,6 @@ class Dimens {
         val mediumPadding = 24.dp
         val doublePadding = 32.dp
         val triplePadding = 64.dp
+        val drawerPadding = 72.dp
     }
 }
