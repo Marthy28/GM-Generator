@@ -22,11 +22,10 @@ data class CharacterData(
     val age: Int,
     val characteristic: Characteristic? = null,
     val physicalDescription: String? = "",
-    val background : String? = ""
+    val background: String? = "",
+    var uid: String? = "",
     //val weapon: Weapon? = null
 ) : Parcelable {
-    @IgnoredOnParcel
-    val pagedList: Race = race
 
     companion object {
         fun createNewCharacter(
@@ -45,7 +44,7 @@ data class CharacterData(
                 race,
                 raceName,
                 age,
-                characteristic
+                characteristic,
             )
         }
 

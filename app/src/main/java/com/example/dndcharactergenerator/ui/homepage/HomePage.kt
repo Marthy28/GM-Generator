@@ -27,22 +27,21 @@ import com.example.dndcharactergenerator.ui.component.SimpleAlertDialog
 import com.example.dndcharactergenerator.utils.SharedPreferencesUtils
 import com.google.gson.GsonBuilder
 
-
 @Composable
 fun HomePage(navController: NavHostController) {
     val context = LocalContext.current
-    Column() {
+    Column {
         ListOfSavedCharacters(context, navController)
     }
 }
 
 @Composable
 fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
-
     val openDialog = remember { mutableStateOf(false) }
     val selectedCharacter = remember {
         mutableStateOf<CharacterData?>(null)
     }
+
     val sharedPreferences =
         context.getSharedPreferences(
             SharedPreferencesUtils.PREFERENCE_CHARACTERS,
@@ -64,7 +63,7 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
             onValidate = {
                 selectedCharacter.value?.let {
                     sharedPreferences.edit().remove(
-                        "character_${it.firstName}_${it.lastName}",
+                        it.uid,
                     ).apply()
                 }
                 charactersListJson = sharedPreferences.all.map { it.value as String }

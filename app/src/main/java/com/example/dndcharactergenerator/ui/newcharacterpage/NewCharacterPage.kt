@@ -67,6 +67,7 @@ fun NewCharacterPage() {
                 if (ageValue == "") null else ageValue.toInt()
             )
             intent.putExtra("character", character)
+            intent.putExtra("editable", false)
             context.startActivity(intent)
         }) {
             Text(stringResource(id = R.string.create_new_character))

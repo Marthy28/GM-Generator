@@ -17,10 +17,24 @@ class CharacterDataDeserializer : JsonDeserializer<CharacterData> {
         val lastName = jsonObject.get("lastName").asString
         val race = Race.fromString(jsonObject.get("raceName").asString)
         val raceName = jsonObject.get("raceName").asString
+        val uid = jsonObject.get("uid").asString
+        val physicalDescription = jsonObject.get("physicalDescription").asString
+        val background = jsonObject.get("background").asString
         val age = jsonObject.get("age").asInt
-        val characteristic = Gson().fromJson(jsonObject.get("characteristic"), Characteristic::class.java)
+        val characteristic =
+            Gson().fromJson(jsonObject.get("characteristic"), Characteristic::class.java)
 
-        return CharacterData(firstName, lastName, race, raceName, age, characteristic)
+        return CharacterData(
+            firstName,
+            lastName,
+            race,
+            raceName,
+            age,
+            characteristic,
+            physicalDescription,
+            background,
+            uid
+        )
     }
 }
 
@@ -36,6 +50,9 @@ class CharacterDataSerializer : JsonSerializer<CharacterData> {
             jsonObject.add("lastName", context?.serialize(src!!.lastName))
             jsonObject.add("raceName", context?.serialize(src!!.raceName))
             jsonObject.add("age", context?.serialize(src!!.age))
+            jsonObject.add("physicalDescription", context?.serialize(src!!.physicalDescription))
+            jsonObject.add("background", context?.serialize(src!!.background))
+            jsonObject.add("uid", context?.serialize(src!!.uid))
             jsonObject.add(
                 "characteristic",
                 JsonParser().parse(Gson().toJson(src?.characteristic)).asJsonObject

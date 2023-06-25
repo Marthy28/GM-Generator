@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -24,6 +25,7 @@ import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
 import com.example.dndcharactergenerator.utils.SharedPreferencesUtils
 import com.google.gson.GsonBuilder
+import java.util.*
 
 class CharacterDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +38,7 @@ class CharacterDetailActivity : ComponentActivity() {
                 Scaffold {
                     var editMode by remember { mutableStateOf(false) }
                     Column(modifier = Modifier.padding(it)) {
-                        TopBar(editMode, onClick = { editMode = !editMode })
+                        TopBar(editMode, onClick = { editMode = !editMode }, editable = editable)
                         character?.let { char ->
                             if (!editMode) {
                                 Column(
@@ -66,6 +68,31 @@ class CharacterDetailActivity : ComponentActivity() {
         var firstName by remember { mutableStateOf(char.firstName) }
         var lastName by remember { mutableStateOf(char.lastName) }
         var age by remember { mutableStateOf(char.age.toString()) }
+        //PAS MIEUX TROUVÉ
+
+        //Background
+        var isBackground by remember {
+            mutableStateOf(!char.background.isNullOrBlank())
+        }
+
+        var background by remember {
+            mutableStateOf(
+                char.background ?: ""
+            )
+        }
+
+        //Physical description
+        var isPhysicalDescription by remember {
+            mutableStateOf(
+                !char.physicalDescription.isNullOrBlank()
+            )
+        }
+        var physicalDescription by remember {
+            mutableStateOf(
+                char.physicalDescription ?: ""
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -97,6 +124,7 @@ class CharacterDetailActivity : ComponentActivity() {
                         )
                     })
             }
+            ///AGE
             OutlinedTextField(value = age,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { age = it },
@@ -109,18 +137,56 @@ class CharacterDetailActivity : ComponentActivity() {
                         fontSize = 12.sp,
                     )
                 })
-            Text(text = "mode édition coucou")
-            Text(text = "Ajouter une description physique")
-            Text(text = "Ajouter une histoire")
+
+            ///BACKGROUND
+            if (isBackground) {
+                OutlinedTextField(value = background,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { background = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = "Background") },
+                    placeholder = {
+                        Text(
+                            text =
+                            "Entrez une belle histoire pour votre personnage",
+                            fontSize = 12.sp,
+                        )
+                    })
+            } else Text(text = "+ Ajouter une histoire", modifier = Modifier.clickable() {
+                isBackground = true
+            })
+
+            //PHYSICAL DESCRIPTION
+            if (isPhysicalDescription)
+                OutlinedTextField(value = physicalDescription,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    onValueChange = { physicalDescription = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(text = "Physical description") },
+                    placeholder = {
+                        Text(
+                            text =
+                            "Entrez une belle description pour votre personnage",
+                            fontSize = 12.sp,
+                        )
+                    })
+            else Text(
+                text = "+ Ajouter une description physique",
+                Modifier.clickable { isPhysicalDescription = true })
+
             OutlinedButton(onClick = {
-                CharacterData(
-                    firstName = firstName,
-                    lastName = lastName,
-                    age = age.toInt(),
-                    race = char.race,
-                    raceName = char.raceName
+                saveCharacter(
+                    CharacterData(
+                        firstName = firstName,
+                        lastName = lastName,
+                        age = age.toInt(),
+                        race = char.race,
+                        raceName = char.raceName,
+                        background = background,
+                        physicalDescription = physicalDescription,
+                        uid = char.uid
+                    )
                 )
-                saveCharacter(char)
                 onSave()
             }) {
                 Text(text = getString(R.string.Save))
@@ -129,23 +195,26 @@ class CharacterDetailActivity : ComponentActivity() {
         }
     }
 
-    private fun saveCharacter(char: CharacterData) {
+    private fun saveCharacter(newCharacter: CharacterData) {
         val gsonBuilder = GsonBuilder().registerTypeAdapter(
             CharacterData::class.java,
             CharacterDataSerializer()
         ).create()
+        if (newCharacter.uid.isNullOrBlank()) {
+            newCharacter.uid = UUID.randomUUID().toString()
+        }
         getSharedPreferences(
             SharedPreferencesUtils.PREFERENCE_CHARACTERS,
             Context.MODE_PRIVATE
         ).edit().putString(
-            "character_${char.firstName}_${char.lastName}",
-            gsonBuilder.toJson(char)
+            newCharacter.uid,
+            gsonBuilder.toJson(newCharacter)
         ).apply()
-        Log.d("JSON DATA", gsonBuilder.toJson(char))
+        Log.d("JSON DATA", gsonBuilder.toJson(newCharacter))
     }
 
     @Composable
-    private fun TopBar(editMode: Boolean, onClick: () -> Unit) {
+    private fun TopBar(editMode: Boolean, onClick: () -> Unit, editable: Boolean) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -157,7 +226,7 @@ class CharacterDetailActivity : ComponentActivity() {
                     modifier = Modifier.size(24.dp)
                 )
             }
-            IconButton(onClick = {
+            if (editable) IconButton(onClick = {
                 onClick()
             }) {
                 Icon(
