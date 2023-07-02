@@ -6,7 +6,7 @@ class Screens {
     companion object ScreensNavigation {
         val screens = listOf(
             AppScreens.Home,
-            AppScreens.NewCharacter
+            AppScreens.NewCharacter,
         )
     }
 }

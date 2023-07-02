@@ -11,6 +11,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.dndcharactergenerator.R
+import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
 import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.navigation.NavigationHost
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun CustomScaffold(navController: NavHostController) {
+fun CustomScaffold(navController: NavHostController, viewModel: CharacterDetailViewModel) {
     MyApplicationTheme {
         val topBarState = rememberSaveable { (mutableStateOf(true)) }
         val nameState = remember { mutableStateOf("") }
@@ -90,7 +91,7 @@ fun CustomScaffold(navController: NavHostController) {
                 },
                 content = {
                     Column {
-                        NavigationHost(navController = navController)
+                        NavigationHost(navController = navController, viewModel)
                     }
                 }
             )

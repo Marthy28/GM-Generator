@@ -19,13 +19,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.CharacterData
+import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.data.Characteristic
 import com.example.dndcharactergenerator.data.Characteristic.Companion.toList
 import com.example.dndcharactergenerator.data.Dragonborn
 import com.example.dndcharactergenerator.theme.Dimens
 
 @Composable
-fun CharacterDetail(character: CharacterData) {
+fun CharacterDetail(character: CharacterDataDB) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -39,10 +40,11 @@ fun CharacterDetail(character: CharacterData) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                DescriptionAndValue(
+                //TODO A VOIR PARCE QUE CA VA PLANTER
+                /*DescriptionAndValue(
                     description = stringResource(R.string.race_description),
                     value = stringResource(character.race.name)
-                )
+                )*/
                 Spacer(modifier = Modifier.height(Dimens.standardPadding))
                 DescriptionAndValue(
                     description = stringResource(R.string.age_description),
@@ -115,12 +117,14 @@ fun DescriptionAndValue(description: String, value: String) {
 @Preview
 @Composable
 fun ShowCharacterDetails(
-    character: CharacterData = CharacterData(
+    character: CharacterDataDB = CharacterDataDB(
         firstName = "Michel",
         lastName = "Micheline",
         raceName = "Dragonbon",
         race = Dragonborn(),
-        age = 45
+        age = 45,
+        characterId = 12,
+        id = 1,
     )
 ) {
     CharacterDetail(character = character)

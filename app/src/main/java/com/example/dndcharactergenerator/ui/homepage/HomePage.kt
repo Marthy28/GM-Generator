@@ -1,8 +1,6 @@
 package com.example.dndcharactergenerator.ui.homepage
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -20,15 +19,16 @@ import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.data.CharacterDataDeserializer
+import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
+import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.theme.Dimens
-import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailActivity
 import com.example.dndcharactergenerator.ui.component.CharacterCardDetail
 import com.example.dndcharactergenerator.ui.component.SimpleAlertDialog
 import com.example.dndcharactergenerator.utils.SharedPreferencesUtils
 import com.google.gson.GsonBuilder
 
 @Composable
-fun HomePage(navController: NavHostController) {
+fun HomePage(navController: NavHostController, viewModel: CharacterDetailViewModel) {
     val context = LocalContext.current
     Column {
         ListOfSavedCharacters(context, navController)
@@ -36,28 +36,26 @@ fun HomePage(navController: NavHostController) {
 }
 
 @Composable
-fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
+fun ListOfSavedCharacters(
+    context: Context,
+    navController: NavHostController,
+    viewModel: CharacterDetailViewModel
+) {
     val openDialog = remember { mutableStateOf(false) }
     val selectedCharacter = remember {
         mutableStateOf<CharacterData?>(null)
     }
 
-    val sharedPreferences =
-        context.getSharedPreferences(
-            SharedPreferencesUtils.PREFERENCE_CHARACTERS,
-            Context.MODE_PRIVATE
-        )
-    var charactersListJson by remember {
-        mutableStateOf(
-            sharedPreferences.all.map { it.value as String }
-        )
-    }
+    viewModel.getAllChararcter()
+    val characterList = viewModel.allcharacters.observeAsState().value
+
+
     val gsonBuilder = GsonBuilder().registerTypeAdapter(
         CharacterData::class.java,
         CharacterDataDeserializer()
     ).create()
 
-    if (openDialog.value) {
+    /*if (openDialog.value) {
         SimpleAlertDialog(
             onDismiss = { openDialog.value = false },
             onValidate = {
@@ -69,9 +67,9 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
                 charactersListJson = sharedPreferences.all.map { it.value as String }
                 openDialog.value = false
             })
-    }
+    }*/
 
-    if (charactersListJson.isEmpty()) {
+    if (characterList.isNullOrEmpty()) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
             Text(stringResource(R.string.character_list_empty))
             Spacer(modifier = Modifier.height(Dimens.standardPadding))
@@ -93,10 +91,7 @@ fun ListOfSavedCharacters(context: Context, navController: NavHostController) {
             items(items = charactersListJson) { item ->
                 val character = gsonBuilder.fromJson(item, CharacterData::class.java)
                 CharacterCardDetail(characterData = character, onClick = {
-                    val intent = Intent(context as Activity, CharacterDetailActivity::class.java)
-                    intent.putExtra("character", character)
-                    intent.putExtra("editable", true)
-                    context.startActivity(intent)
+                    navController.navigate(AppScreens.CharacterDetail.routeWithArgs(character.uid.toString()))
                 }, onDelete = {
                     selectedCharacter.value = character
                     openDialog.value = true
