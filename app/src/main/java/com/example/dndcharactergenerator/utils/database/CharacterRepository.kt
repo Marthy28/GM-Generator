@@ -1,4 +1,4 @@
-package com.example.dndcharactergenerator.utils
+package com.example.dndcharactergenerator.utils.database
 
 import androidx.lifecycle.MutableLiveData
 import com.example.dndcharactergenerator.data.CharacterDataDB
@@ -24,7 +24,7 @@ class CharacterRepository(private val employeeDao: CharacterDao) {
         }
     }
 
-    fun getCharacter(id: String): CharacterDataDB {
+    fun getCharacter(id: String) {
         coroutineScope.launch(Dispatchers.IO) {
             foundCharacter.postValue(employeeDao.findEmployeeById(id))
         }

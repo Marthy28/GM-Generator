@@ -18,7 +18,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dndcharactergenerator.R
-import com.example.dndcharactergenerator.data.CharacterData
 import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.data.Characteristic
 import com.example.dndcharactergenerator.data.Characteristic.Companion.toList
@@ -120,7 +119,6 @@ fun ShowCharacterDetails(
     character: CharacterDataDB = CharacterDataDB(
         firstName = "Michel",
         lastName = "Micheline",
-        raceName = "Dragonbon",
         race = Dragonborn(),
         age = 45,
         characterId = 12,

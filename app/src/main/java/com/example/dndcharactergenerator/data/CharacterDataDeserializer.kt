@@ -10,15 +10,14 @@ import com.google.gson.JsonSerializationContext
 import com.google.gson.JsonSerializer
 import java.lang.reflect.Type
 
-
-class CharacterDataDeserializer : JsonDeserializer<CharacterData> {
+/*class CharacterDataDeserializer : JsonDeserializer<CharacterData> {
 
     override fun deserialize(
-        json: JsonElement?,
+        json: JsonElement,
         typeOfT: Type?,
         context: JsonDeserializationContext?
     ): CharacterData {
-        val jsonObject = json!!.asJsonObject
+        val jsonObject = json.asJsonObject
 
         val firstName = jsonObject.get("firstName").asString
         val lastName = jsonObject.get("lastName").asString
@@ -69,4 +68,4 @@ class CharacterDataSerializer : JsonSerializer<CharacterData> {
         }
         return jsonObject
     }
-}
+}*/

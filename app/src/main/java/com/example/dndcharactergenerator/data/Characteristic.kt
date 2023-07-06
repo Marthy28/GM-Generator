@@ -47,5 +47,18 @@ data class Characteristic(
             this.charisma,
             this.pv
         )
+
+        fun characteristicFromList(list: List<Int>): Characteristic {
+            return Characteristic(
+                //TODO faire mieux espèce de gros flemmard
+                list[0],
+                list[1],
+                list[2],
+                list[3],
+                list[4],
+                list[5],
+                10
+            )
+        }
     }
 }

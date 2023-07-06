@@ -2,35 +2,16 @@ package com.example.dndcharactergenerator.data
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.Gson
-import com.google.gson.annotations.Expose
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 import kotlin.reflect.full.createInstance
 
 private fun readAssetsFile(fileId: Int, context: Context): String =
     context.resources.openRawResource(fileId).bufferedReader().use { it.readText() }
-
-@Parcelize
-data class CharacterData(
-    val firstName: String,
-    val lastName: String,
-    @Expose(serialize = false)
-    val race: Race,
-    val raceName: String,
-    val age: Int,
-    val characteristic: Characteristic? = null,
-    val physicalDescription: String? = "",
-    val background: String? = "",
-    var uid: String? = "",
-    //val weapon: Weapon? = null
-) : Parcelable
 
 @Parcelize
 @Entity(tableName = "characters")
@@ -43,28 +24,25 @@ data class CharacterDataDB(
     var characterId: Long,
 
     @ColumnInfo(name = "firstName")
-    val firstName: String,
+    var firstName: String,
 
     @ColumnInfo(name = "lastName")
-    val lastName: String,
+    var lastName: String,
 
-    @Expose(serialize = false)
-    val race: Race,
-
-    @ColumnInfo(name = "raceName")
-    val raceName: String,
+    @ColumnInfo(name = "race")
+    var race: Race? = null,
 
     @ColumnInfo(name = "characterAge")
-    val age: Long,
+    var age: Long,
 
     @ColumnInfo(name = "characteristics")
-    val characteristic: Characteristic? = null,
+    var characteristic: Characteristic? = null,
 
     @ColumnInfo(name = "characterPhysicalDescription")
-    val physicalDescription: String? = "",
+    var physicalDescription: String? = "",
 
     @ColumnInfo(name = "characterBackground")
-    val background: String? = "",
+    var background: String? = "",
 ) : Parcelable {
     companion object {
         fun createNewCharacter(
@@ -73,7 +51,6 @@ data class CharacterDataDB(
             age: Long? = null
         ): CharacterDataDB {
             val race = raceName?.let { Race.fromStringResource(it) } ?: getRandomRace()
-            val raceName = race.javaClass.simpleName
             val fullName = getName(context, race)
             val age = age ?: getRandomAge()
             val characteristic = Characteristic.generateRandomCarac()
@@ -81,7 +58,6 @@ data class CharacterDataDB(
                 firstName = fullName.first,
                 lastName = fullName.second,
                 race = race,
-                raceName = raceName,
                 age = age,
                 characteristic = characteristic,
                 characterId = 1,

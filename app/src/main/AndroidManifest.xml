@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:windowSoftInputMode="adjustResize"
+        android:name=".HiltApplicationWrapper"
         android:theme="@style/Theme.DnDCharacterGenerator">
         <activity
             android:name=".MainActivity"
@@ -21,12 +22,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:windowSoftInputMode="adjustResize"
-            android:name=".ui.characterdetail.CharacterDetailActivity"
-            android:exported="true"
-            android:theme="@style/Theme.DnDCharacterGenerator"
-            android:permission=""/>
     </application>
-
 </manifest>

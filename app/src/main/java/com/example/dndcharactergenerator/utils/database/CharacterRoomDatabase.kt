@@ -1,15 +1,18 @@
-package com.example.dndcharactergenerator.utils
+package com.example.dndcharactergenerator.utils.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.example.dndcharactergenerator.data.CharacterDataDB
+import com.example.dndcharactergenerator.utils.Converters
 
 @Database(entities = [(CharacterDataDB::class)], version = 1, exportSchema = false)
+@TypeConverters(Converters::class)
 abstract class CharacterRoomDatabase : RoomDatabase() {
 
-    abstract fun CharacterDao(): CharacterDao
+    abstract fun characterDao(): CharacterDao
 
     companion object {
         /*The value of a volatile variable will never be cached, and all writes and reads will be done to and from the main memory.

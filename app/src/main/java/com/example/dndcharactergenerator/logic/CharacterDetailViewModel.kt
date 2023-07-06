@@ -3,16 +3,15 @@ package com.example.dndcharactergenerator.logic
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.dndcharactergenerator.data.CharacterDataDB
-import com.example.dndcharactergenerator.utils.CharacterRepository
+import com.example.dndcharactergenerator.utils.database.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterDetailViewModel @Inject constructor(private val characterRepository: CharacterRepository) :
-    ViewModel() {
+class CharacterDetailViewModel @Inject constructor(private val characterRepository: CharacterRepository) : ViewModel() {
 
     val foundEmployee: LiveData<CharacterDataDB> = characterRepository.foundCharacter
-    val allcharacters: LiveData<List<CharacterDataDB>> = characterRepository.allCharacter
+    val allCharacters: LiveData<List<CharacterDataDB>> = characterRepository.allCharacter
 
     fun saveNewCharacter(character: CharacterDataDB) {
         characterRepository.addCharacter(character)

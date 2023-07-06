@@ -15,7 +15,7 @@ import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
 fun NavigationHost(navController: NavHostController, characterViewModel: CharacterDetailViewModel) {
     NavHost(navController, startDestination = AppScreens.Home.route) {
         composable(AppScreens.Home.route) {
-            HomePage(navController)
+            HomePage(navController, viewModel = characterViewModel)
         }
         composable(AppScreens.NewCharacter.route) {
             NewCharacterPage(navController, characterViewModel)

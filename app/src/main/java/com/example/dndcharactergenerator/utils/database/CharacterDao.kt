@@ -1,4 +1,4 @@
-package com.example.dndcharactergenerator.utils
+package com.example.dndcharactergenerator.utils.database
 
 import androidx.room.*
 import com.example.dndcharactergenerator.data.CharacterDataDB
