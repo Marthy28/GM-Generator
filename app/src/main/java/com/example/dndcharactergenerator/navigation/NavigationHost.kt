@@ -1,5 +1,6 @@
 package com.example.dndcharactergenerator.navigation
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -12,13 +13,13 @@ import com.example.dndcharactergenerator.ui.homepage.HomePage
 import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
 
 @Composable
-fun NavigationHost(navController: NavHostController, characterViewModel: CharacterDetailViewModel) {
+fun NavigationHost(navController: NavHostController, characterViewModel: CharacterDetailViewModel, showSnackbar : (String, SnackbarDuration) -> Unit) {
     NavHost(navController, startDestination = AppScreens.Home.route) {
         composable(AppScreens.Home.route) {
             HomePage(navController, viewModel = characterViewModel)
         }
         composable(AppScreens.NewCharacter.route) {
-            NewCharacterPage(navController, characterViewModel)
+            NewCharacterPage(navController, characterViewModel, showSnackbar = showSnackbar)
         }
         composable(
             route = AppScreens.CharacterDetail.route + "{characterId}",

@@ -14,19 +14,19 @@ class CharacterRepository(private val employeeDao: CharacterDao) {
 
     fun addCharacter(newEmployee: CharacterDataDB) {
         coroutineScope.launch(Dispatchers.IO) {
-            employeeDao.addEmployee(newEmployee)
+            employeeDao.addCharacter(newEmployee)
         }
     }
 
     fun updateCharacterDetails(newEmployee: CharacterDataDB) {
         coroutineScope.launch(Dispatchers.IO) {
-            employeeDao.updateEmployeeDetails(newEmployee)
+            employeeDao.updateCharacterDetails(newEmployee)
         }
     }
 
     fun getCharacter(id: String) {
         coroutineScope.launch(Dispatchers.IO) {
-            foundCharacter.postValue(employeeDao.findEmployeeById(id))
+            foundCharacter.postValue(employeeDao.findCharacterById(id))
         }
     }
 

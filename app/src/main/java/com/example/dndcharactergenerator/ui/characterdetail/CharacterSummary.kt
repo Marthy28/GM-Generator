@@ -10,22 +10,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.CharacterDataDB
-import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
 import com.example.dndcharactergenerator.theme.Dimens
 
-//Page utilisée pour afficher le résumé de la création d'un personnage
+//Page utilisée pour afficher le résumé d'un personnage
 
 @Composable
 fun CharacterSummary(
     characterData: CharacterDataDB,
-    viewModel: CharacterDetailViewModel
+    onCLick: () -> Unit
 ) {
 
     return Column() {
         CharacterDetail(character = characterData)
         Spacer(modifier = Modifier.height(Dimens.standardPadding))
         OutlinedButton(
-            onClick = { viewModel.saveNewCharacter(characterData) },
+            onClick = {
+                onCLick()
+            },
         ) {
             Text(stringResource(R.string.Save))
         }

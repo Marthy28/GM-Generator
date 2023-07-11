@@ -2,6 +2,7 @@ package com.example.dndcharactergenerator.data
 
 import android.content.Context
 import android.os.Parcelable
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,7 +20,8 @@ data class CharacterDataDB(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Int,
-
+//https://xabaras.medium.com/universally-unique-ids-as-a-primary-key-in-a-room-database-f67a78bdbf4d
+    //TODO Créer un objet de type UUID pour incrémenter automatiquement l'id
     @ColumnInfo(name = "characterId")
     var characterId: Long,
 
@@ -54,15 +56,18 @@ data class CharacterDataDB(
             val fullName = getName(context, race)
             val age = age ?: getRandomAge()
             val characteristic = Characteristic.generateRandomCarac()
-            return CharacterDataDB(
+            val id = Random.nextInt(0,1000)
+            val character =  CharacterDataDB(
                 firstName = fullName.first,
                 lastName = fullName.second,
                 race = race,
                 age = age,
                 characteristic = characteristic,
-                characterId = 1,
-                id = 1
+                id = id,
+                characterId = id.toLong()
             )
+
+            return character
         }
 
         private fun getName(context: Context, race: Race): Pair<String, String> {

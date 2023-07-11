@@ -16,6 +16,8 @@ import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.navigation.NavigationHost
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
 import com.example.dndcharactergenerator.utils.Screens
+import com.example.dndcharactergenerator.utils.SnackbarAppState
+import com.example.dndcharactergenerator.utils.rememberSnackbarAppState
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -29,6 +31,7 @@ fun CustomScaffold(navController: NavHostController, viewModel: CharacterDetailV
         val scope = rememberCoroutineScope()
         val items = Screens.screens
         val selectedItem = remember { mutableStateOf(items[0]) }
+        val appState: SnackbarAppState = rememberSnackbarAppState()
 
         //Control topBar state
         when (navBackStackEntry?.destination?.route) {
@@ -36,65 +39,74 @@ fun CustomScaffold(navController: NavHostController, viewModel: CharacterDetailV
                 topBarState.value = true
                 nameState.value = stringResource(R.string.home_page_name)
             }
+
             AppScreens.NewCharacter.route -> {
                 topBarState.value = true
                 nameState.value = stringResource(R.string.new_character)
 
             }
+
             else -> topBarState.value = false
         }
 
-        Column {
-            TopAppBar(
-                modifier = Modifier.windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
-                title = { Text(text = nameState.value) },
-                navigationIcon = {
-                    IconButton(onClick = {
-                        scope.launch {
-                            if (drawerState.isOpen) drawerState.close() else drawerState.open()
+        Scaffold(snackbarHost = { SnackbarHost(hostState = appState.snackbarHostState) }) {
+            Column(modifier = Modifier.padding(it)) {
+                TopAppBar(
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
+                    title = { Text(text = nameState.value) },
+                    navigationIcon = {
+                        IconButton(onClick = {
+                            scope.launch {
+                                if (drawerState.isOpen) drawerState.close() else drawerState.open()
+                            }
+                        }) {
+                            Icon(Icons.Default.Menu, "Menu")
                         }
-                    }) {
-                        Icon(Icons.Default.Menu, "Menu")
-                    }
-                })
-            ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet(
-                        drawerTonalElevation = DrawerDefaults.PermanentDrawerElevation
-                    ) {
-                        Surface(color = MaterialTheme.colorScheme.background) {
-                            Column {
-                                items.forEach { item ->
-                                    NavigationDrawerItem(
-                                        label = { Text(item.title) },
-                                        selected = item == selectedItem.value,
-                                        onClick = {
-                                            scope.launch { drawerState.close() }
-                                            selectedItem.value = item
-                                            navController.navigate(item.route) {
-                                                navController.graph.startDestinationRoute?.let { route ->
-                                                    popUpTo(route) {
-                                                        saveState = true
+                    })
+                ModalNavigationDrawer(
+                    drawerState = drawerState,
+                    drawerContent = {
+                        ModalDrawerSheet(
+                            drawerTonalElevation = DrawerDefaults.PermanentDrawerElevation
+                        ) {
+                            Surface(color = MaterialTheme.colorScheme.background) {
+                                Column {
+                                    items.forEach { item ->
+                                        NavigationDrawerItem(
+                                            label = { Text(item.title) },
+                                            selected = item == selectedItem.value,
+                                            onClick = {
+                                                scope.launch { drawerState.close() }
+                                                selectedItem.value = item
+                                                navController.navigate(item.route) {
+                                                    navController.graph.startDestinationRoute?.let { route ->
+                                                        popUpTo(route) {
+                                                            saveState = true
+                                                        }
                                                     }
+                                                    launchSingleTop = true
+                                                    restoreState = true
                                                 }
-                                                launchSingleTop = true
-                                                restoreState = true
-                                            }
-                                        },
-                                        modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                                    )
+                                            },
+                                            modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                                        )
+                                    }
                                 }
                             }
                         }
+                    },
+                    content = {
+                        Column {
+                            NavigationHost(
+                                navController = navController,
+                                characterViewModel = viewModel,
+                                showSnackbar = { message, duration ->
+                                    appState.showSnackBar(message = message, duration = duration)
+                                })
+                        }
                     }
-                },
-                content = {
-                    Column {
-                        NavigationHost(navController = navController, viewModel)
-                    }
-                }
-            )
+                )
+            }
         }
     }
 }
