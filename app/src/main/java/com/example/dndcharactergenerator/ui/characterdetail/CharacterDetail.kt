@@ -3,8 +3,12 @@ package com.example.dndcharactergenerator.ui.characterdetail
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,22 +22,42 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.dndcharactergenerator.R
-import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.data.Characteristic
 import com.example.dndcharactergenerator.data.Characteristic.Companion.toList
 import com.example.dndcharactergenerator.data.Dragonborn
 import com.example.dndcharactergenerator.theme.Dimens
+import com.example.dndcharactergenerator.utils.database.CharacterData
 
 @Composable
-fun CharacterDetail(character: CharacterDataDB) {
+fun CharacterDetail(
+    character: CharacterData,
+    editableClick: () -> Unit = {},
+    editMode: Boolean = false
+) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
-            Text(
-                text = "${character.firstName} ${character.lastName}",
-                style = MaterialTheme.typography.headlineMedium
-            )
+            Row (horizontalArrangement = Arrangement.Center){
+                Text(
+                    text = "${character.firstName} ${character.lastName}",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.weight(0.90f)
+                )
+                if (editMode) {
+                    IconButton(
+                        modifier = Modifier.weight(0.10f),
+                        onClick = {
+                            editableClick()
+                        }) {
+                        Icon(
+                            Icons.Filled.Edit,
+                            contentDescription = "Edit",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+            }
             Spacer(modifier = Modifier.height(Dimens.standardPadding))
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -116,12 +140,11 @@ fun DescriptionAndValue(description: String, value: String) {
 @Preview
 @Composable
 fun ShowCharacterDetails(
-    character: CharacterDataDB = CharacterDataDB(
+    character: CharacterData = CharacterData(
         firstName = "Michel",
         lastName = "Micheline",
         race = Dragonborn(),
         age = 45,
-        characterId = 12,
         id = 1,
     )
 ) {

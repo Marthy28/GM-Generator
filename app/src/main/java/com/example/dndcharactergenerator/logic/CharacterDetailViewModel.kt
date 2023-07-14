@@ -1,28 +1,26 @@
 package com.example.dndcharactergenerator.logic
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.dndcharactergenerator.data.CharacterDataDB
+import com.example.dndcharactergenerator.utils.database.CharacterData
 import com.example.dndcharactergenerator.utils.database.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(private val characterRepository: CharacterRepository) :
     ViewModel() {
 
-    val foundEmployee: LiveData<CharacterDataDB> = characterRepository.foundCharacter
-    val allCharacters: LiveData<List<CharacterDataDB>> = characterRepository.allCharacter
+    val foundCharacter: LiveData<CharacterData> = characterRepository.foundCharacter
+    val allCharacters: LiveData<List<CharacterData>> = characterRepository.allCharacter
 
-    fun saveNewCharacter(character: CharacterDataDB) {
+    fun saveNewCharacter(character: CharacterData) {
         characterRepository.addCharacter(character)
     }
 
-    fun updateCharacter(character: CharacterDataDB) {
+    fun updateCharacter(character: CharacterData) {
         characterRepository.updateCharacterDetails(character)
+        getCharacter(character.id.toString())
     }
 
     fun getCharacter(id: String) {
@@ -31,5 +29,9 @@ class CharacterDetailViewModel @Inject constructor(private val characterReposito
 
     fun getAllChararcter() {
         characterRepository.getAllCharacters()
+    }
+
+    fun deleteCharacter(character: CharacterData) {
+        characterRepository.deleteCharacter(character)
     }
 }

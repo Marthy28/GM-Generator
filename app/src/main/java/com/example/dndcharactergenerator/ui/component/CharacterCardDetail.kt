@@ -19,12 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.utils.Mock
+import com.example.dndcharactergenerator.utils.database.CharacterData
 
 @Composable
-fun CharacterCardDetail(characterData: CharacterDataDB, onClick: () -> Unit, onDelete: () -> Unit) {
+fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit, onDelete: () -> Unit) {
     Card(
         elevation = CardDefaults.cardElevation(),
         modifier = Modifier

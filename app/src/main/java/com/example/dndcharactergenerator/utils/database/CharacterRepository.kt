@@ -1,38 +1,43 @@
 package com.example.dndcharactergenerator.utils.database
 
 import androidx.lifecycle.MutableLiveData
-import com.example.dndcharactergenerator.data.CharacterDataDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CharacterRepository(private val employeeDao: CharacterDao) {
+class CharacterRepository(private val characterDao: CharacterDao) {
 
-    val allCharacter = MutableLiveData<List<CharacterDataDB>>()
-    val foundCharacter = MutableLiveData<CharacterDataDB>()
+    val allCharacter = MutableLiveData<List<CharacterData>>()
+    val foundCharacter = MutableLiveData<CharacterData>()
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun addCharacter(newEmployee: CharacterDataDB) {
+    fun addCharacter(newCharacter: CharacterData) {
         coroutineScope.launch(Dispatchers.IO) {
-            employeeDao.addCharacter(newEmployee)
+            characterDao.addCharacter(newCharacter)
         }
     }
 
-    fun updateCharacterDetails(newEmployee: CharacterDataDB) {
+    fun updateCharacterDetails(newCharacter: CharacterData) {
         coroutineScope.launch(Dispatchers.IO) {
-            employeeDao.updateCharacterDetails(newEmployee)
+            characterDao.updateCharacterDetails(newCharacter)
         }
     }
 
     fun getCharacter(id: String) {
         coroutineScope.launch(Dispatchers.IO) {
-            foundCharacter.postValue(employeeDao.findCharacterById(id))
+            foundCharacter.postValue(characterDao.findCharacterById(id))
         }
     }
 
     fun getAllCharacters() {
         coroutineScope.launch(Dispatchers.IO) {
-            allCharacter.postValue(employeeDao.getAllEmployees())
+            allCharacter.postValue(characterDao.getAllEmployees())
+        }
+    }
+
+    fun deleteCharacter(characterToDelete: CharacterData) {
+        coroutineScope.launch(Dispatchers.IO) {
+            characterDao.deleteCharacter(characterToDelete)
         }
     }
 }

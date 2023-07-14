@@ -9,17 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.dndcharactergenerator.R
-import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.theme.Dimens
+import com.example.dndcharactergenerator.utils.database.CharacterData
 
 //Page utilisée pour afficher le résumé d'un personnage
 
 @Composable
 fun CharacterSummary(
-    characterData: CharacterDataDB,
+    characterData: CharacterData,
     onCLick: () -> Unit
 ) {
-
     return Column() {
         CharacterDetail(character = characterData)
         Spacer(modifier = Modifier.height(Dimens.standardPadding))

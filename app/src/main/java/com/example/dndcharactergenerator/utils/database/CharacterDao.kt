@@ -1,22 +1,21 @@
 package com.example.dndcharactergenerator.utils.database
 
 import androidx.room.*
-import com.example.dndcharactergenerator.data.CharacterDataDB
 
 @Dao
 interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addCharacter(character: CharacterDataDB)
+    suspend fun addCharacter(character: CharacterData)
 
-    @Query("SELECT * FROM characters WHERE characterId = :charId")
-    fun findCharacterById(charId: String): CharacterDataDB
+    @Query("SELECT * FROM characters WHERE charId = :charId")
+    fun findCharacterById(charId: String): CharacterData
 
     @Query("SELECT * FROM characters")
-    fun getAllEmployees(): List<CharacterDataDB>
+    fun getAllEmployees(): List<CharacterData>
 
     @Update
-    suspend fun updateCharacterDetails(character: CharacterDataDB)
+    suspend fun updateCharacterDetails(character: CharacterData)
 
     @Delete
-    suspend fun deleteCharacter(character: CharacterDataDB)
+    suspend fun deleteCharacter(character: CharacterData)
 }

@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+//TODO ajouter une snackBar custom en paramètre
 class SnackbarAppState(
     val snackbarHostState: SnackbarHostState,
     val snackbarScope: CoroutineScope,

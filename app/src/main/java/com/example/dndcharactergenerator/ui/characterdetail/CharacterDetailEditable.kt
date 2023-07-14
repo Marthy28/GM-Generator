@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,10 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.R
-import com.example.dndcharactergenerator.data.CharacterDataDB
 import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
+import com.example.dndcharactergenerator.utils.database.CharacterData
 
 @Composable
 fun CharacterDetailEditable(
@@ -29,28 +27,38 @@ fun CharacterDetailEditable(
     viewModel: CharacterDetailViewModel
 ) {
     viewModel.getCharacter(characterId!!)
-    val selectedCharacter = viewModel.foundEmployee.observeAsState().value
+    val selectedCharacter = viewModel.foundCharacter.observeAsState().value
 
     MyApplicationTheme() {
-        Scaffold {
-            var editMode by remember { mutableStateOf(false) }
-            Column(modifier = Modifier.padding(it)) {
-                TopBar(editMode, onClick = { editMode = !editMode }, navController = navController)
-                selectedCharacter?.let { char ->
-                    if (!editMode) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier.padding(Dimens.standardPadding)
-                        ) {
-                            CharacterDetail(char)
-                        }
-                    } else {
-                        EditableMode(
-                            char = char,
-                            onSave = { editMode = false },
-                            viewModel = viewModel
+        var editMode by remember { mutableStateOf(false) }
+        Column() {
+            selectedCharacter?.let { char ->
+                IconButton(onClick = { navController.navigate("home") }) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                if (!editMode) {
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(Dimens.standardPadding)
+                    ) {
+                        CharacterDetail(
+                            char,
+                            editableClick = { editMode = true },
+                            editMode = true
                         )
                     }
+                } else {
+                    EditableMode(
+                        char = char,
+                        onClick = {
+                            editMode = false
+                        },
+                        viewModel = viewModel
+                    )
                 }
             }
         }
@@ -59,8 +67,8 @@ fun CharacterDetailEditable(
 
 @Composable
 private fun EditableMode(
-    char: CharacterDataDB,
-    onSave: () -> Unit,
+    char: CharacterData,
+    onClick: () -> Unit,
     viewModel: CharacterDetailViewModel
 ) {
     var firstName by remember { mutableStateOf(char.firstName) }
@@ -172,45 +180,26 @@ private fun EditableMode(
             text = "+ Ajouter une description physique",
             Modifier.clickable { isPhysicalDescription = true })
 
-        OutlinedButton(onClick = {
-            viewModel.updateCharacter(
-                char.copy(
-                    firstName = firstName,
-                    lastName = lastName,
-                    age = age.toLong(),
-                    background = background,
-                    physicalDescription = physicalDescription
+        Row {
+            OutlinedButton(onClick = {
+                viewModel.updateCharacter(
+                    char.copy(
+                        firstName = firstName,
+                        lastName = lastName,
+                        age = age.toLong(),
+                        background = background,
+                        physicalDescription = physicalDescription
+                    )
                 )
-            )
-            onSave()
-        }) {
-            Text(text = stringResource(R.string.Save))
-            // if validate
-        }
-    }
-}
-
-@Composable
-private fun TopBar(editMode: Boolean, onClick: () -> Unit, navController: NavHostController) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        IconButton(onClick = { navController.navigate("home") }) {
-            Icon(
-                Icons.Filled.ArrowBack,
-                contentDescription = "Back",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        IconButton(onClick = {
-            onClick()
-        }) {
-            Icon(
-                if (!editMode) Icons.Filled.Edit else Icons.Filled.Close,
-                contentDescription = "Edit",
-                modifier = Modifier.size(24.dp)
-            )
+                onClick()
+            }) {
+                Text(text = stringResource(R.string.Save))
+            }
+            OutlinedButton(onClick = {
+                onClick()
+            }) {
+                Text(text = "Annuler")
+            }
         }
     }
 }
