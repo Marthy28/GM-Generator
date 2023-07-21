@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -21,7 +22,7 @@ import com.example.dndcharactergenerator.theme.MyApplicationTheme
 import com.example.dndcharactergenerator.utils.database.CharacterData
 
 @Composable
-fun CharacterDetailEditable(
+fun CharacterDetailEditablePage(
     navController: NavHostController,
     characterId: String?,
     viewModel: CharacterDetailViewModel
@@ -29,6 +30,7 @@ fun CharacterDetailEditable(
     viewModel.getCharacter(characterId!!)
     val selectedCharacter = viewModel.foundCharacter.observeAsState().value
 
+    //bug chelou marche que la deuxième fois
     MyApplicationTheme() {
         var editMode by remember { mutableStateOf(false) }
         Column() {
@@ -56,6 +58,7 @@ fun CharacterDetailEditable(
                         char = char,
                         onClick = {
                             editMode = false
+                            navController.popBackStack() //temporaire
                         },
                         viewModel = viewModel
                     )
@@ -147,7 +150,7 @@ private fun EditableMode(
         ///BACKGROUND
         if (isBackground) {
             OutlinedTextField(value = background,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 onValueChange = { background = it },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Background") },
@@ -165,7 +168,7 @@ private fun EditableMode(
         //PHYSICAL DESCRIPTION
         if (isPhysicalDescription)
             OutlinedTextField(value = physicalDescription,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                 onValueChange = { physicalDescription = it },
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(text = "Physical description") },
@@ -179,18 +182,17 @@ private fun EditableMode(
         else Text(
             text = "+ Ajouter une description physique",
             Modifier.clickable { isPhysicalDescription = true })
-
-        Row {
-            OutlinedButton(onClick = {
-                viewModel.updateCharacter(
-                    char.copy(
-                        firstName = firstName,
-                        lastName = lastName,
-                        age = age.toLong(),
-                        background = background,
-                        physicalDescription = physicalDescription
-                    )
+        Spacer(modifier = Modifier.height(Dimens.standardPadding))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Button(onClick = {
+                val newCharacter = char.copy(
+                    firstName = firstName,
+                    lastName = lastName,
+                    age = age.toLong(),
+                    background = background,
+                    physicalDescription = physicalDescription
                 )
+                viewModel.updateCharacter(newCharacter)
                 onClick()
             }) {
                 Text(text = stringResource(R.string.Save))

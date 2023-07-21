@@ -80,7 +80,6 @@ fun ListOfSavedCharacters(
         LazyColumn(modifier = Modifier.padding(Dimens.standardPadding)) {
             items(items = characterList) { item ->
                 CharacterCardDetail(characterData = item, onClick = {
-                    //navController.navigate(AppScreens.CharacterDetail.routeWithArgs(item.id.toString()))
                     val route = AppScreens.CharacterDetail.routeWithArgs(item.id.toString())
                     navController.navigate(route)
                 }, onDelete = {

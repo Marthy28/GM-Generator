@@ -73,10 +73,17 @@ fun CustomScaffold(navController: NavHostController, viewModel: CharacterDetailV
 
             }
 
+            AppScreens.Dice.route -> {
+                topBarState.value = true
+                nameState.value = "Lanceur de dé"
+
+            }
+
             AppScreens.CharacterDetail.route -> {
                 topBarState.value = false
                 nameState.value = "Détail du personnage"
             }
+
             else -> topBarState.value = false
         }
 

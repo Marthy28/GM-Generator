@@ -34,7 +34,7 @@ fun CharacterCardDetail(characterData: CharacterData, onClick: () -> Unit, onDel
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = Dimens.standardPadding)
+            modifier = Modifier.padding(horizontal = Dimens.standardPadding).fillMaxWidth()
         ) {
             Text("${characterData.firstName} ${characterData.lastName}")
             IconButton(onClick = onDelete) {

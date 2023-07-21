@@ -7,6 +7,7 @@ class Screens {
         val screens = listOf(
             AppScreens.Home,
             AppScreens.NewCharacter,
+            AppScreens.Dice,
         )
     }
 }

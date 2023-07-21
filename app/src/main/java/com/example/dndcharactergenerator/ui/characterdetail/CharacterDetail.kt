@@ -38,7 +38,7 @@ fun CharacterDetail(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
-            Row (horizontalArrangement = Arrangement.Center){
+            Row(horizontalArrangement = Arrangement.Center) {
                 Text(
                     text = "${character.firstName} ${character.lastName}",
                     style = MaterialTheme.typography.headlineMedium,
@@ -77,6 +77,14 @@ fun CharacterDetail(
             character.characteristic?.let {
                 CharacteristicGrid(it)
             }
+            if (!character.background.isNullOrEmpty()) {
+                Text(text = "Background")
+                Text(character.background)
+            }
+            if (!character.physicalDescription.isNullOrEmpty()) {
+                Text(text = "Description Physique")
+                Text(character.physicalDescription)
+            }
         }
 
     }
@@ -84,7 +92,7 @@ fun CharacterDetail(
 }
 
 @Composable
-fun CharacteristicGrid(characteristic: Characteristic) {
+private fun CharacteristicGrid(characteristic: Characteristic) {
     val characteristicsString = listOf("STR", "DEX", "CON", "INT", "SAG", "CHA", "HP")
     val characteristicsList = characteristic.toList()
     LazyRow(

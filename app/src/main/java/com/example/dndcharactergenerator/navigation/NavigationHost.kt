@@ -22,7 +22,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
-import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailEditable
+import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailEditablePage
+import com.example.dndcharactergenerator.ui.dicepage.DicePage
 import com.example.dndcharactergenerator.ui.homepage.HomePage
 import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -56,6 +57,11 @@ fun NavigationHost(
                 showSnackbar = showSnackbar
             )
         }
+        composable(AppScreens.Dice.route) {
+            DicePage(
+                navController,
+            )
+        }
         composable(
             route = AppScreens.CharacterDetail.route + "/{characterId}",
             arguments = listOf(
@@ -65,7 +71,7 @@ fun NavigationHost(
                     nullable = false
                 })
         ) {
-            CharacterDetailEditable(
+            CharacterDetailEditablePage(
                 navController,
                 characterId = it.arguments?.getString("characterId"),
                 characterViewModel
