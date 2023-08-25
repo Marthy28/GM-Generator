@@ -13,5 +13,6 @@ class Dimens {
         val doublePadding = 32.dp
         val triplePadding = 64.dp
         val drawerPadding = 72.dp
+        val segmentedButtonHeight = 40.dp
     }
 }

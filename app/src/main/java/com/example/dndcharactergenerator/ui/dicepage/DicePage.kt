@@ -13,7 +13,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.theme.Dimens
-import com.example.dndcharactergenerator.ui.component.dices.d20
+import com.example.dndcharactergenerator.ui.component.dices.D10
+import com.example.dndcharactergenerator.ui.component.dices.D100
+import com.example.dndcharactergenerator.ui.component.dices.D12
+import com.example.dndcharactergenerator.ui.component.dices.D20
+import com.example.dndcharactergenerator.ui.component.dices.D4
+import com.example.dndcharactergenerator.ui.component.dices.D6
+import com.example.dndcharactergenerator.ui.component.dices.D8
 import kotlin.random.Random
 
 val dices: Map<Int, Int> = mapOf(
@@ -37,7 +43,7 @@ fun DicePage(navController: NavHostController) {
     ) {
 
         SegmentedButton(
-            listOf("1d4", "1d6", "1d8", "1d10", "1d20", "1d100"), modifier = Modifier
+            listOf("d4", "d6", "d8", "d10", "d20", "d100"), modifier = Modifier
                 .fillMaxWidth()
                 .padding(Dimens.standardPadding)
         ) {
@@ -50,6 +56,12 @@ fun DicePage(navController: NavHostController) {
             Text(
                 text = result.value.toString()
             )
-        d20()
+        D20(value = 20)
+        D8(value = 8)
+        D6(value = 6)
+        D4(value = 4)
+        D12(value = 12)
+        D10(value = 10)
+        D100(value = 100)
     }
 }
