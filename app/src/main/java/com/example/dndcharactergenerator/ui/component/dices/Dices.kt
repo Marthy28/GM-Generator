@@ -2,6 +2,7 @@ package com.example.dndcharactergenerator.ui.component.dices
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -10,11 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.theme.Dimens
 
 @Composable
-fun D20(value: Int) {
+fun D20Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d20), contentDescription = "")
         Text(
@@ -26,7 +28,7 @@ fun D20(value: Int) {
 }
 
 @Composable
-fun D100(value: Int) {
+fun D100Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d20), contentDescription = "")
         Text(
@@ -38,7 +40,7 @@ fun D100(value: Int) {
 }
 
 @Composable
-fun D10(value: Int) {
+fun D10Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d10), contentDescription = "")
         Text(
@@ -50,7 +52,7 @@ fun D10(value: Int) {
 }
 
 @Composable
-fun D12(value: Int) {
+fun D12Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d20), contentDescription = "")
         Text(
@@ -62,7 +64,7 @@ fun D12(value: Int) {
 }
 
 @Composable
-fun D8(value: Int) {
+fun D8Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d8), contentDescription = "")
         Text(
@@ -74,7 +76,7 @@ fun D8(value: Int) {
 }
 
 @Composable
-fun D6(value: Int) {
+fun D6Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d6), contentDescription = "")
         Text(
@@ -86,7 +88,7 @@ fun D6(value: Int) {
 }
 
 @Composable
-fun D4(value: Int) {
+fun D4Component(value: Int) {
     Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Image(painterResource(id = R.drawable.d4), contentDescription = "")
         Text(
@@ -94,5 +96,18 @@ fun D4(value: Int) {
             text = value.toString(),
             fontWeight = FontWeight.Bold
         )
+    }
+}
+
+@Composable
+@Preview
+fun ShowDices() {
+    Column {
+        D4Component(value = 4)
+        D6Component(value = 6)
+        D8Component(value = 8)
+        D10Component(value = 10)
+        D20Component(value = 20)
+        D100Component(value = 100)
     }
 }
