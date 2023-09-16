@@ -1,6 +1,14 @@
 package com.example.dndcharactergenerator.ui.characterdetail
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
@@ -109,6 +117,8 @@ private fun CharacteristicGrid(characteristic: Characteristic) {
                 Spacer(modifier = Modifier.height(Dimens.halfPadding))
                 Text(
                     text = when (characteristicsList[index]) {
+                        in 2..3 -> "-4"
+                        in 4..5 -> "-3"
                         in 6..7 -> "-2"
                         in 8..9 -> "-1"
                         in 12..13 -> "+1"

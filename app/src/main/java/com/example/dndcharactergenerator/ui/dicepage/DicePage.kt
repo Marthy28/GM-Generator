@@ -1,9 +1,11 @@
 package com.example.dndcharactergenerator.ui.dicepage
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,11 +13,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.data.Dice
 import com.example.dndcharactergenerator.data.Dice.Companion.toStringLabel
 import com.example.dndcharactergenerator.theme.Dimens
-
 import kotlin.random.Random
 
 val dices = listOf<Dice>(
@@ -48,13 +51,16 @@ fun DicePage(navController: NavHostController) {
             diceType.value = it
         }
         Button(onClick = {
-            result.value = Random.nextInt(1, dices[diceType.value].maxValue) + 1
+            result.value = Random.nextInt(0, dices[diceType.value].maxValue) + 1
             display.value = true
         }) {
             Text(text = "Lancer le dé")
         }
 
         if (display.value)
-            Dice.Display(dice = dices[diceType.value], value = result.value)
+            Box(
+                modifier = Modifier.width((LocalConfiguration.current.screenWidthDp * 2 / 3).dp),
+                contentAlignment = Alignment.Center
+            ) { Dice.Display(dice = dices[diceType.value], value = result.value) }
     }
 }
