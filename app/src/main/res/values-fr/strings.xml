@@ -6,10 +6,19 @@
     <string name="race_elf">Elfe</string>
     <string name="race_dwarf">Nain</string>
     <string name="age_description">Age : </string>
-    <string name="Save">Sauvegarder</string>
+    <string name="save">Sauvegarder</string>
+    <string name="cancel">Annuler</string>
     <string name="new_character">Nouveau personnage</string>
     <string name="create_new_character">Créer un nouveau personnage</string>
     <string name="home_page_name">D&amp;D generateur</string>
     <string name="new_character_page">New character page</string>
     <string name="character_list_empty">Votre liste de personnage est vide</string>
+    <string name="enter_character_name">Entrez le prénom du personnage</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom de famille</string>
+    <string name="enter_character_age">Entrez l\'âge du personnage (par défaut aléatoire)</string>
+    <string name="write_backstory">Écrivez une belle histoire pour le personnage</string>
+    <string name="add_backstory">Ajouter une histoire</string>
+    <string name="write_physical_description">Écrivez une belle description pour le personnage</string>
+    <string name="add_physical_description">Ajouter une description physique</string>
 </resources>

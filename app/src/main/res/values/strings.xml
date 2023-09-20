@@ -6,10 +6,19 @@
     <string name="race_elf">Elve</string>
     <string name="race_dwarf">Dwarf</string>
     <string name="age_description">Age : </string>
-    <string name="Save">Save</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="new_character">New character</string>
     <string name="create_new_character">Create new character</string>
     <string name="home_page_name">D&amp;D generator</string>
     <string name="new_character_page">New character page</string>
     <string name="character_list_empty">Your character list is empty</string>
+    <string name="enter_character_name">Entrer character name</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="enter_character_age">Enter character\'s age (random by default)</string>
+    <string name="write_backstory">Write a beautiful story for your character</string>
+    <string name="add_backstory">Add a backstory</string>
+    <string name="write_physical_description">Write a beautiful description for the character</string>
+    <string name="add_physical_description">Add physical description</string>
 </resources>

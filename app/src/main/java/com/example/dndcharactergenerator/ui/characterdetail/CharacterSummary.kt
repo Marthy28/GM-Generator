@@ -17,17 +17,18 @@ import com.example.dndcharactergenerator.utils.database.CharacterData
 @Composable
 fun CharacterSummary(
     characterData: CharacterData,
-    onCLick: () -> Unit
+    onCLick: () -> Unit,
+    modifier: Modifier
 ) {
     return Column() {
         CharacterDetail(character = characterData)
-        Spacer(modifier = Modifier.height(Dimens.standardPadding))
+        Spacer(modifier = modifier.height(Dimens.standardPadding))
         OutlinedButton(
             onClick = {
                 onCLick()
             },
         ) {
-            Text(stringResource(R.string.Save))
+            Text(stringResource(R.string.save))
         }
     }
 }

@@ -27,7 +27,7 @@ class CharacterDetailViewModel @Inject constructor(private val characterReposito
         characterRepository.getCharacter(id)
     }
 
-    fun getAllChararcter() {
+    fun getAllCharacter() {
         characterRepository.getAllCharacters()
     }
 

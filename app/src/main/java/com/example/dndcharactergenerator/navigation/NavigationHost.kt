@@ -23,6 +23,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
 import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailEditablePage
+import com.example.dndcharactergenerator.ui.characterdetail.CharacterDetailPage
 import com.example.dndcharactergenerator.ui.dicepage.DicePage
 import com.example.dndcharactergenerator.ui.homepage.HomePage
 import com.example.dndcharactergenerator.ui.newcharacterpage.NewCharacterPage
@@ -64,6 +65,21 @@ fun NavigationHost(
         }
         composable(
             route = AppScreens.CharacterDetail.route + "/{characterId}",
+            arguments = listOf(
+                navArgument("characterId") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                    nullable = false
+                })
+        ) {
+            CharacterDetailPage(
+                navController,
+                characterId = it.arguments?.getString("characterId"),
+                characterViewModel
+            )
+        }
+        composable(
+            route = AppScreens.CharacterDetailEdit.route + "/{characterId}",
             arguments = listOf(
                 navArgument("characterId") {
                     type = NavType.StringType

@@ -1,5 +1,6 @@
 package com.example.dndcharactergenerator.ui.characterdetail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,8 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,9 +29,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.data.Characteristic
 import com.example.dndcharactergenerator.data.Characteristic.Companion.toList
@@ -43,7 +49,9 @@ fun CharacterDetail(
     editMode: Boolean = false
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
             Row(horizontalArrangement = Arrangement.Center) {
@@ -85,13 +93,16 @@ fun CharacterDetail(
             character.characteristic?.let {
                 CharacteristicGrid(it)
             }
-            if (!character.background.isNullOrEmpty()) {
-                Text(text = "Background")
-                Text(character.background)
-            }
+
             if (!character.physicalDescription.isNullOrEmpty()) {
-                Text(text = "Description Physique")
-                Text(character.physicalDescription)
+                ExtraSection(
+                    title = "Description Physique",
+                    content = character.physicalDescription
+                )
+            }
+
+            if (!character.background.isNullOrEmpty()) {
+                ExtraSection(title = "Background", content = character.background)
             }
         }
 
@@ -111,7 +122,7 @@ private fun CharacteristicGrid(characteristic: Characteristic) {
     ) {
         itemsIndexed(characteristicsString) { index, charac ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = charac)
+                Text(text = charac, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(Dimens.halfPadding))
                 Text(text = "${characteristicsList[index]}")
                 Spacer(modifier = Modifier.height(Dimens.halfPadding))
@@ -153,6 +164,22 @@ fun DescriptionAndValue(description: String, value: String) {
         }
         append(" $value")
     })
+}
+
+@Composable
+fun ExtraSection(title: String, content: String) {
+    Column (modifier = Modifier.padding(top = Dimens.standardPadding)){
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = title, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Divider(
+                thickness = 1.dp,
+                color = Color.Black,
+                modifier = Modifier.padding(horizontal = Dimens.halfPadding)
+            )
+        }
+        Spacer(modifier = Modifier.height(Dimens.halfPadding))
+        Text(text = content, fontSize = 12.sp)
+    }
 }
 
 @Preview

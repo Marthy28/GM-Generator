@@ -48,15 +48,18 @@ data class CharacterData(
         fun createNewCharacter(
             context: Context,
             raceName: Int? = null,
-            age: Long? = null
+            age: Long? = null,
+            firstName: String?,
+            lastName: String?,
         ): CharacterData {
             val race = raceName?.let { Race.fromStringResource(it) } ?: getRandomRace()
+            //Todo changer ça faire une fonction companion object pour l'utiliser partout et surtout dans le characterViewModel
             val fullName = getName(context, race)
             val age = age ?: getRandomAge()
             val characteristic = Characteristic.generateRandomCarac()
             val character = CharacterData(
-                firstName = fullName.first,
-                lastName = fullName.second,
+                firstName = firstName ?: fullName.first,
+                lastName = lastName ?: fullName.second,
                 race = race,
                 age = age,
                 characteristic = characteristic,

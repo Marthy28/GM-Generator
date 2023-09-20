@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.dndcharactergenerator.R
 import com.example.dndcharactergenerator.logic.CharacterDetailViewModel
+import com.example.dndcharactergenerator.navigation.AppScreens
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.theme.MyApplicationTheme
 import com.example.dndcharactergenerator.utils.database.CharacterData
@@ -30,39 +31,36 @@ fun CharacterDetailEditablePage(
     viewModel.getCharacter(characterId!!)
     val selectedCharacter = viewModel.foundCharacter.observeAsState().value
 
-    //bug chelou marche que la deuxième fois
     MyApplicationTheme() {
-        var editMode by remember { mutableStateOf(false) }
         Column() {
             selectedCharacter?.let { char ->
-                IconButton(onClick = { navController.navigate("home") }) {
+                IconButton(onClick = {
+                    val route = AppScreens.CharacterDetail.routeWithArgs(characterId)
+                    navController.navigate(route) {
+                        popUpTo(route) {
+                            saveState = true
+                        }
+                    }
+                }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Back",
                         modifier = Modifier.size(24.dp)
                     )
                 }
-                if (!editMode) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier.padding(Dimens.standardPadding)
-                    ) {
-                        CharacterDetail(
-                            char,
-                            editableClick = { editMode = true },
-                            editMode = true
-                        )
-                    }
-                } else {
-                    EditableMode(
-                        char = char,
-                        onClick = {
-                            editMode = false
-                            navController.popBackStack() //temporaire
-                        },
-                        viewModel = viewModel
-                    )
-                }
+                EditableMode(
+                    char = char,
+                    onClick =
+                    {
+                        val route = AppScreens.CharacterDetail.routeWithArgs(characterId)
+                        navController.navigate(route) {
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                    },
+                    viewModel = viewModel
+                )
             }
         }
     }
@@ -112,11 +110,11 @@ private fun EditableMode(
                 modifier = Modifier.weight(1f),
                 value = firstName,
                 onValueChange = { firstName = it },
-                label = { Text(text = "first name") },
+                label = { Text(text = stringResource(R.string.first_name)) },
                 placeholder = {
                     Text(
                         text =
-                        "Entrez le prénom du personnage",
+                        stringResource(R.string.enter_character_name),
                         fontSize = 12.sp,
                     )
                 })
@@ -124,11 +122,11 @@ private fun EditableMode(
                 modifier = Modifier.weight(1f),
                 value = lastName,
                 onValueChange = { lastName = it },
-                label = { Text(text = "last name") },
+                label = { Text(text = stringResource(R.string.last_name)) },
                 placeholder = {
                     Text(
                         text =
-                        "Entrez le nom du personnage",
+                        stringResource(R.string.enter_character_name),
                         fontSize = 12.sp,
                     )
                 })
@@ -142,7 +140,7 @@ private fun EditableMode(
             placeholder = {
                 Text(
                     text =
-                    "Entrez l'âge du personnage (par défaut aléatoire)",
+                    stringResource(R.string.enter_character_age),
                     fontSize = 12.sp,
                 )
             })
@@ -157,13 +155,15 @@ private fun EditableMode(
                 placeholder = {
                     Text(
                         text =
-                        "Entrez une belle histoire pour votre personnage",
+                        stringResource(R.string.write_backstory),
                         fontSize = 12.sp,
                     )
                 })
-        } else Text(text = "+ Ajouter une histoire", modifier = Modifier.clickable {
-            isBackground = true
-        })
+        } else Text(
+            text = "+ ${stringResource(R.string.add_backstory)}",
+            modifier = Modifier.clickable {
+                isBackground = true
+            })
 
         //PHYSICAL DESCRIPTION
         if (isPhysicalDescription)
@@ -175,12 +175,12 @@ private fun EditableMode(
                 placeholder = {
                     Text(
                         text =
-                        "Entrez une belle description pour votre personnage",
+                        stringResource(R.string.write_physical_description),
                         fontSize = 12.sp,
                     )
                 })
         else Text(
-            text = "+ Ajouter une description physique",
+            text = "+ ${stringResource(R.string.add_physical_description)}",
             Modifier.clickable { isPhysicalDescription = true })
         Spacer(modifier = Modifier.height(Dimens.standardPadding))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -195,12 +195,12 @@ private fun EditableMode(
                 viewModel.updateCharacter(newCharacter)
                 onClick()
             }) {
-                Text(text = stringResource(R.string.Save))
+                Text(text = stringResource(R.string.save))
             }
             OutlinedButton(onClick = {
                 onClick()
             }) {
-                Text(text = "Annuler")
+                Text(text = stringResource(R.string.cancel))
             }
         }
     }

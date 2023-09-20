@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +35,20 @@ fun HomePage(
     viewModel: CharacterDetailViewModel,
     showSnackbar: (String, SnackbarDuration) -> Unit
 ) {
-    Column {
-        ListOfSavedCharacters(navController, viewModel, showSnackbar)
+    Scaffold(floatingActionButton = {
+        AddCharacterFloatingActionButton(onClick = {
+            navController.navigate("newCharacter") {
+                navController.graph.startDestinationRoute?.let { route ->
+                    popUpTo(route) {
+                        saveState = true
+                    }
+                }
+            }
+        })
+    }) {
+        Column(modifier = Modifier.padding(it)) {
+            ListOfSavedCharacters(navController, viewModel, showSnackbar)
+        }
     }
 }
 
@@ -44,7 +61,7 @@ fun ListOfSavedCharacters(
     val openDialog = remember { mutableStateOf(false) }
     val characterToDelete = remember { mutableStateOf<CharacterData?>(null) }
 
-    viewModel.getAllChararcter()
+    viewModel.getAllCharacter()
     val characterList = viewModel.allCharacters.observeAsState().value
 
     if (openDialog.value) {
@@ -77,7 +94,7 @@ fun ListOfSavedCharacters(
             }
         }
     } else {
-        LazyColumn(modifier = Modifier.padding(Dimens.standardPadding)) {
+        LazyColumn {
             items(items = characterList) { item ->
                 CharacterCardDetail(characterData = item, onClick = {
                     val route = AppScreens.CharacterDetail.routeWithArgs(item.id.toString())
@@ -88,5 +105,12 @@ fun ListOfSavedCharacters(
                 })
             }
         }
+    }
+}
+
+@Composable
+fun AddCharacterFloatingActionButton(onClick: () -> Unit) {
+    FloatingActionButton(onClick = onClick) {
+        Icon(Icons.Filled.Add, "Floating action button.")
     }
 }
