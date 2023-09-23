@@ -1,6 +1,7 @@
 package com.example.dndcharactergenerator.ui.newcharacterpage
 
-import android.graphics.drawable.Icon
+import android.content.Context
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
@@ -19,6 +19,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,7 +42,6 @@ import com.example.dndcharactergenerator.ui.characterdetail.CharacterSummary
 import com.example.dndcharactergenerator.utils.database.CharacterData
 import kotlin.reflect.full.createInstance
 
-//TODO Séparer en deux fonctions : éditable et non éditable
 @Composable
 fun NewCharacterPage(
     navHostController: NavHostController,
@@ -53,8 +53,10 @@ fun NewCharacterPage(
     var customizationState by remember { mutableStateOf(false) }
     val raceNamesResource = Race::class.sealedSubclasses.map { it.createInstance().name }
     var character by remember { mutableStateOf<CharacterData?>(null) }
-    var characterFirstName by remember { mutableStateOf("") }
-    var characterLastName by remember { mutableStateOf("") }
+    val characterFirstName = remember { mutableStateOf("") }
+    val characterLastName = remember { mutableStateOf("") }
+    val race =
+        (if (raceIndex != -1) Race.fromStringResource(raceNamesResource[raceIndex]) else viewModel.getRandomRace())
 
     if (character == null) {
         Column(modifier = Modifier.padding(Dimens.standardPadding)) {
@@ -69,55 +71,27 @@ fun NewCharacterPage(
             Spacer(modifier = Modifier.height(Dimens.halfPadding))
             if (customizationState) {
                 Spacer(modifier = Modifier.height(Dimens.standardPadding))
+                //#region RACE
                 CustomDropDown(
                     items = raceNamesResource.map { stringResource(id = it) }.toList(),
                     onClickAction = { raceIndex = it },
                     placeHolder = "Sélectionnez la race de votre personnage"
                 )
                 Spacer(modifier = Modifier.height(Dimens.standardPadding))
-                OutlinedTextField(value = characterFirstName,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    onValueChange = { characterFirstName = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Prénom") },
-                    placeholder = {
-                        Text(
-                            text =
-                            "Entrez le prénom du personnage",
-                            fontSize = 12.sp,
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painterResource(id = R.drawable.dice_random),
-                                contentDescription = "",
-                                modifier = Modifier.size(25.dp)
-                            )
-                        }
-                    })
-                Spacer(modifier = Modifier.height(Dimens.standardPadding))
-                OutlinedTextField(value = characterLastName,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                    onValueChange = { characterLastName = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(text = "Nom de famille") },
-                    placeholder = {
-                        Text(
-                            text =
-                            "Entrez le nom de famille du personnage",
-                            fontSize = 12.sp,
-                        )
-                    }, trailingIcon = {
-                        IconButton(onClick = { /*TODO*/ }) {
-                            Icon(
-                                painterResource(id = R.drawable.dice_random),
-                                contentDescription = "",
-                                modifier = Modifier.size(25.dp)
-                            )
-                        }
-                    })
-                Spacer(modifier = Modifier.height(Dimens.standardPadding))
+                //#endregion
+                FirstNameTextField(
+                    characterFirstName,
+                    context = context,
+                    viewModel = viewModel,
+                    race = race
+                )
+                LastNameTextField(
+                    characterLastName = characterLastName,
+                    viewModel = viewModel,
+                    race = race,
+                    context = context
+                )
+                //#region AGE
                 OutlinedTextField(value = ageValue,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     onValueChange = { ageValue = it },
@@ -132,14 +106,15 @@ fun NewCharacterPage(
                     })
             }
             Spacer(modifier = Modifier.height(Dimens.standardPadding))
+            //#endregion
             OutlinedButton(onClick = {
-                //trouver une autre solution
-                character = CharacterData.createNewCharacter(
-                    context,
-                    if (raceIndex == -1) null else raceNamesResource[raceIndex],
-                    if (ageValue == "") null else ageValue.toLong(),
-                    characterFirstName.ifEmpty { null },
-                    characterLastName.ifEmpty { null }
+
+                character = viewModel.createCharacter(
+                    race,
+                    ageValue,
+                    characterFirstName.value,
+                    characterLastName.value,
+                    context
                 )
             }) {
                 Text(stringResource(id = R.string.create_new_character))
@@ -147,13 +122,92 @@ fun NewCharacterPage(
         }
     } else {
         //Validation
-        CharacterSummary(
-            character!!,
-            modifier = Modifier.padding(all = Dimens.standardPadding),
-            onCLick = {
-                viewModel.saveNewCharacter(character!!)
-                showSnackbar("Personnage enregistré", SnackbarDuration.Short)
-                navHostController.navigate(AppScreens.Home.route)
-            })
+        Box(Modifier.padding(Dimens.standardPadding)) {
+            CharacterSummary(
+                character!!,
+                modifier = Modifier.padding(Dimens.standardPadding),
+                onCLick = {
+                    viewModel.saveNewCharacter(character!!)
+                    showSnackbar("Personnage enregistré", SnackbarDuration.Short)
+                    navHostController.navigate(AppScreens.Home.route)
+                })
+        }
     }
 }
+
+//#region FIRST NAME
+@Composable
+fun FirstNameTextField(
+    characterFirstName: MutableState<String>,
+    viewModel: CharacterDetailViewModel,
+    race: Race,
+    context: Context
+) {
+    OutlinedTextField(
+        value = characterFirstName.value,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        onValueChange = { characterFirstName.value = it },
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Prénom") },
+        placeholder = {
+            Text(
+                text =
+                "Entrez le prénom du personnage",
+                fontSize = 12.sp,
+            )
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                characterFirstName.value = viewModel.getRandomFirstNameFromRace(
+                    race,
+                    context
+                )
+            }) {
+                Icon(
+                    painterResource(id = R.drawable.dice_random),
+                    contentDescription = "",
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+        })
+    Spacer(modifier = Modifier.height(Dimens.standardPadding))
+}
+//#endregion
+
+//#region LAST NAME
+@Composable
+fun LastNameTextField(
+    characterLastName: MutableState<String>,
+    viewModel: CharacterDetailViewModel,
+    race: Race,
+    context: Context
+) {
+    OutlinedTextField(value = characterLastName.value,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+        onValueChange = { characterLastName.value = it },
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Nom de famille") },
+        placeholder = {
+            Text(
+                text =
+                "Entrez le nom de famille du personnage",
+                fontSize = 12.sp,
+            )
+        }, trailingIcon = {
+            IconButton(onClick = {
+                characterLastName.value =
+                    viewModel.getRandomLastNameFromRace(
+                        race,
+                        context
+                    )
+            }) {
+                Icon(
+                    painterResource(id = R.drawable.dice_random),
+                    contentDescription = "",
+                    modifier = Modifier.size(25.dp)
+                )
+            }
+        })
+    Spacer(modifier = Modifier.height(Dimens.standardPadding))
+}
+//#endregion

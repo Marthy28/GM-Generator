@@ -1,6 +1,5 @@
 package com.example.dndcharactergenerator.ui.characterdetail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -29,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,11 +76,6 @@ fun CharacterDetail(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                //TODO A VOIR PARCE QUE CA VA PLANTER
-                /*DescriptionAndValue(
-                    description = stringResource(R.string.race_description),
-                    value = stringResource(character.race.name)
-                )*/
                 Spacer(modifier = Modifier.height(Dimens.standardPadding))
                 DescriptionAndValue(
                     description = stringResource(R.string.age_description),
@@ -105,9 +97,7 @@ fun CharacterDetail(
                 ExtraSection(title = "Background", content = character.background)
             }
         }
-
     }
-
 }
 
 @Composable

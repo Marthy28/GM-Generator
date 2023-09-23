@@ -94,7 +94,7 @@ fun ListOfSavedCharacters(
             }
         }
     } else {
-        LazyColumn {
+        LazyColumn(Modifier.padding(horizontal = Dimens.halfPadding)) {
             items(items = characterList) { item ->
                 CharacterCardDetail(characterData = item, onClick = {
                     val route = AppScreens.CharacterDetail.routeWithArgs(item.id.toString())
