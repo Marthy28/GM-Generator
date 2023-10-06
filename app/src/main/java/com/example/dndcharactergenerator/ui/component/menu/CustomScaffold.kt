@@ -1,21 +1,12 @@
 package com.example.dndcharactergenerator.ui.component.menu
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.slideOutHorizontally
+import CustomTopBar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
@@ -25,7 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -87,28 +77,18 @@ fun CustomScaffold(navController: NavHostController, viewModel: CharacterDetailV
             else -> topBarState.value = false
         }
 
-        Scaffold(snackbarHost = { SnackbarHost(hostState = appState.snackbarHostState) }, topBar = {
-            AnimatedVisibility(
-                visible = topBarState.value,
-                enter = EnterTransition.None,
-                exit = slideOutHorizontally(
-                    targetOffsetX = { it }
-                ),
-            ) {
-                TopAppBar(
-                    modifier = Modifier.windowInsetsPadding(WindowInsets.statusBarsIgnoringVisibility),
-                    title = { Text(text = nameState.value) },
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            scope.launch {
-                                if (drawerState.isOpen) drawerState.close() else drawerState.open()
-                            }
-                        }) {
-                            Icon(Icons.Default.Menu, "Menu")
+        Scaffold(
+            snackbarHost = { SnackbarHost(hostState = appState.snackbarHostState) /*{ SnackbarData -> CustomSnackBar() } */ },
+            topBar = {
+                if (topBarState.value) CustomTopBar(
+                    onClick = {
+                        scope.launch {
+                            if (drawerState.isOpen) drawerState.close() else drawerState.open()
                         }
-                    })
+                    },
+                    text = nameState.value
+                )
             }
-        }
         ) {
             Column(modifier = Modifier.padding(it)) {
                 ModalNavigationDrawer(

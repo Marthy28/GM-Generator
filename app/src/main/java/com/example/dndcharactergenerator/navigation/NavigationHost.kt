@@ -7,6 +7,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
@@ -40,10 +41,7 @@ fun NavigationHost(
     AnimatedNavHost(navController, startDestination = AppScreens.Home.route) {
         composable(route = AppScreens.Home.route,
             popExitTransition = {
-                //TODO c'est dégeulasse à refaire
-                slideOutHorizontally(
-                    targetOffsetX = { 1000 }
-                )
+                slideOutHorizontally()
             }) {
             HomePage(
                 navController,
@@ -70,7 +68,13 @@ fun NavigationHost(
                     type = NavType.StringType
                     defaultValue = ""
                     nullable = false
-                })
+                }),
+            enterTransition = {
+                slideInHorizontally()
+            },
+            popExitTransition = {
+                slideOutHorizontally()
+            }
         ) {
             CharacterDetailPage(
                 navController,

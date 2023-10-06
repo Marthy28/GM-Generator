@@ -1,10 +1,13 @@
 package com.example.dndcharactergenerator.utils
 
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
@@ -18,10 +21,7 @@ class SnackbarAppState(
 ) {
     fun showSnackBar(message: String, duration: SnackbarDuration = SnackbarDuration.Short) {
         snackbarScope.launch {
-            snackbarHostState.showSnackbar(
-                message = message,
-                duration = duration
-            )
+            snackbarHostState.showSnackbar(message = message, duration = duration)
         }
     }
 }
@@ -37,4 +37,11 @@ fun rememberSnackbarAppState(
         navController = navController,
         snackbarScope = coroutineScope
     )
+}
+
+@Composable
+fun CustomSnackBar() {
+    Snackbar(containerColor = Color.Black) {
+        Text("hello, bro")
+    }
 }
