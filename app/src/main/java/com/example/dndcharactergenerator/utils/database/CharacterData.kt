@@ -1,10 +1,13 @@
 package com.example.dndcharactergenerator.utils.database
 
+import android.content.Context
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.dndcharactergenerator.data.Characteristic
 import com.example.dndcharactergenerator.data.Race
+
+private fun readAssetsFile(fileId: Int, context: Context): String =
+    context.resources.openRawResource(fileId).bufferedReader().use { it.readText() }
 
 @Entity(tableName = "characters")
 data class CharacterData(
@@ -12,7 +15,7 @@ data class CharacterData(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "charId")
     val id: Int = 0,
-//https://xabaras.medium.com/universally-unique-ids-as-a-primary-key-in-a-room-database-f67a78bdbf4d
+    //https://xabaras.medium.com/universally-unique-ids-as-a-primary-key-in-a-room-database-f67a78bdbf4d
     //TODO Créer un objet de type UUID pour incrémenter automatiquement l'id
     @ColumnInfo(name = "firstName")
     val firstName: String,
@@ -25,9 +28,6 @@ data class CharacterData(
 
     @ColumnInfo(name = "characterAge")
     val age: Long,
-
-    @ColumnInfo(name = "characteristics")
-    val characteristic: Characteristic? = null,
 
     @ColumnInfo(name = "characterPhysicalDescription")
     val physicalDescription: String? = "",
@@ -43,13 +43,11 @@ data class CharacterData(
             firstName: String,
             lastName: String,
         ): CharacterData {
-            val characteristic = Characteristic.generateRandomCarac()
             return CharacterData(
                 firstName = firstName,
                 lastName = lastName,
                 race = race,
                 age = age,
-                characteristic = characteristic,
             )
         }
     }

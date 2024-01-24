@@ -11,7 +11,6 @@ class Mock {
             race = Dragonborn(),
             age = 45,
             id = 4,
-            characteristic = null,
         )
     }
 }

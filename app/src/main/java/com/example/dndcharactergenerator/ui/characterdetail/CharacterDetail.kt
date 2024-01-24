@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Card
@@ -33,8 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dndcharactergenerator.R
-import com.example.dndcharactergenerator.data.Characteristic
-import com.example.dndcharactergenerator.data.Characteristic.Companion.toList
 import com.example.dndcharactergenerator.data.Dragonborn
 import com.example.dndcharactergenerator.theme.Dimens
 import com.example.dndcharactergenerator.utils.database.CharacterData
@@ -82,9 +77,6 @@ fun CharacterDetail(
                     value = character.age.toString()
                 )
             }
-            character.characteristic?.let {
-                CharacteristicGrid(it)
-            }
 
             if (!character.physicalDescription.isNullOrEmpty()) {
                 ExtraSection(
@@ -100,7 +92,7 @@ fun CharacterDetail(
     }
 }
 
-@Composable
+/*@Composable
 private fun CharacteristicGrid(characteristic: Characteristic) {
     val characteristicsString = listOf("STR", "DEX", "CON", "INT", "SAG", "CHA", "HP")
     val characteristicsList = characteristic.toList()
@@ -143,7 +135,7 @@ private fun CharacteristicGrid(characteristic: Characteristic) {
             }
         }
     }
-}
+}*/
 
 
 @Composable
@@ -184,21 +176,5 @@ fun ShowCharacterDetails(
     )
 ) {
     CharacterDetail(character = character)
-}
-
-@Preview
-@Composable
-fun ShowCharacteristicsGrid(
-    characteristic: Characteristic = Characteristic(
-        12,
-        12,
-        12,
-        12,
-        12,
-        12,
-        12
-    )
-) {
-    CharacteristicGrid(characteristic = characteristic)
 }
         
