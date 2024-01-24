@@ -1,1 +1,1 @@
-# DnD-Generator
+# MJ-Generator
